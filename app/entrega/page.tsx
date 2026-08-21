@@ -1,0 +1,3 @@
+use client;
+import {useEffect,useState} from "react";
+export default function Entrega(){const[o,setO]=useState<any>();useEffect(()=>{const id=new URLSearchParams(location.search).get("id");if(id)fetch(`/api/pedido?id=${id}`,{cache:"no-store"}).then(r=>r.json()).then(setO)},[]);if(!o)return <main><h1>Verificando pagamento...</h1></main>;if(!o.approved)return <main><h1>Pagamento ainda não aprovado</h1><p>A entrega será liberada após a confirmação.</p></main>;return <main><h1>Compra aprovada!</h1><h2>{o.product?.name}</h2><a href={o.product?.deliveryUrl} target="_blank" rel="noreferrer">Baixar meu produto →</a></main>}
