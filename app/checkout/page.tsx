@@ -82,433 +82,166 @@ export default async function Checkout({
   searchParams: Promise<{ produto?: string }>;
 }) {
   const params = await searchParams;
-  const productKey = params.produto as ProductKey | undefined;
 
+  const productKey = params.produto as ProductKey | undefined;
   const product = productKey ? products[productKey] : undefined;
 
   if (!product) {
     return (
-      <main className="checkout-page">
-        <div className="checkout-container">
-          <div className="error-card">
-            <div className="error-icon">!</div>
+      <main className="min-h-screen bg-[#050208] px-5 py-32 text-white">
+        <div className="mx-auto max-w-3xl rounded-3xl border border-white/10 bg-white/[0.03] p-12 text-center">
+          <div className="mb-5 text-5xl">⚠️</div>
 
-            <h1>Produto não encontrado</h1>
+          <h1 className="text-4xl font-black">
+            Produto não encontrado
+          </h1>
 
-            <p>
-              O produto selecionado não existe ou o link está incorreto.
-            </p>
+          <p className="mt-4 text-zinc-400">
+            O produto selecionado não existe ou o link está incorreto.
+          </p>
 
-            <Link href="/loja" className="back-button">
-              ← Voltar para a loja
-            </Link>
-          </div>
+          <Link
+            href="/loja"
+            className="mt-8 inline-block rounded-xl bg-purple-600 px-6 py-4 font-black transition hover:bg-purple-500"
+          >
+            ← Voltar para a loja
+          </Link>
         </div>
-
-        <style jsx>{`
-          .checkout-page {
-            min-height: 100vh;
-            background:
-              radial-gradient(
-                circle at 50% 0%,
-                rgba(124, 58, 237, 0.18),
-                transparent 35%
-              ),
-              #050208;
-            color: white;
-            padding: 120px 20px 60px;
-          }
-
-          .checkout-container {
-            max-width: 900px;
-            margin: 0 auto;
-          }
-
-          .error-card {
-            text-align: center;
-            padding: 70px 30px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 28px;
-            background: rgba(255, 255, 255, 0.035);
-            backdrop-filter: blur(20px);
-          }
-
-          .error-icon {
-            width: 60px;
-            height: 60px;
-            margin: 0 auto 20px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            font-size: 30px;
-            font-weight: 900;
-          }
-
-          h1 {
-            font-size: 38px;
-            margin: 0 0 12px;
-          }
-
-          p {
-            color: #a1a1aa;
-            margin-bottom: 30px;
-          }
-
-          .back-button {
-            display: inline-block;
-            padding: 14px 22px;
-            border-radius: 12px;
-            background: #7c3aed;
-            color: white;
-            text-decoration: none;
-            font-weight: 800;
-          }
-        `}</style>
       </main>
     );
   }
 
   return (
-    <main className="checkout-page">
-      <div className="checkout-container">
-        <Link href="/loja" className="back-link">
+    <main className="min-h-screen bg-[#050208] px-5 pb-24 pt-32 text-white">
+      <div className="mx-auto max-w-6xl">
+
+        <Link
+          href="/loja"
+          className="text-sm font-bold text-purple-400 transition hover:text-white"
+        >
           ← Voltar para a loja
         </Link>
 
-        <div className="checkout-grid">
-          <section className="product-card">
-            <div className="badge">{product.badge}</div>
+        <div className="mt-8 grid gap-6 md:grid-cols-2">
 
-            <p className="eyebrow">SEU PEDIDO</p>
+          {/* PRODUTO */}
+          <section className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035] p-8 shadow-2xl backdrop-blur-xl">
 
-            <h1>{product.name}</h1>
+            <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-purple-600/20 blur-3xl" />
 
-            <p className="description">{product.description}</p>
+            <div className="relative">
 
-            <div className="price">
-              <span>R$</span>
-              {product.price.toFixed(2).replace(".", ",")}
-            </div>
+              <span className="inline-block rounded-full border border-purple-400/20 bg-purple-500/10 px-3 py-2 text-xs font-black text-purple-300">
+                {product.badge}
+              </span>
 
-            <div className="divider" />
+              <p className="mt-8 text-xs font-black tracking-[0.2em] text-purple-400">
+                SEU PEDIDO
+              </p>
 
-            <h2>O que está incluso</h2>
+              <h1 className="mt-3 text-5xl font-black tracking-tight">
+                {product.name}
+              </h1>
 
-            <div className="features">
-              {product.features.map((feature) => (
-                <div className="feature" key={feature}>
-                  <span>✓</span>
-                  {feature}
-                </div>
-              ))}
+              <p className="mt-5 max-w-lg leading-7 text-zinc-400">
+                {product.description}
+              </p>
+
+              <div className="mt-8 text-5xl font-black">
+                <span className="mr-2 text-lg text-purple-400">
+                  R$
+                </span>
+
+                {product.price.toFixed(2).replace(".", ",")}
+              </div>
+
+              <div className="my-8 h-px bg-white/10" />
+
+              <h2 className="text-2xl font-black">
+                O que está incluso
+              </h2>
+
+              <div className="mt-6 space-y-4">
+                {product.features.map((feature) => (
+                  <div
+                    key={feature}
+                    className="flex items-center gap-3 text-zinc-300"
+                  >
+                    <span className="grid h-7 w-7 place-items-center rounded-full bg-purple-500/15 font-black text-purple-300">
+                      ✓
+                    </span>
+
+                    {feature}
+                  </div>
+                ))}
+              </div>
+
             </div>
           </section>
 
-          <section className="payment-card">
-            <div className="secure">
-              <span>🔒</span>
-              CHECKOUT SEGURO
+          {/* PAGAMENTO */}
+          <section className="rounded-[2rem] border border-white/10 bg-white/[0.035] p-8 shadow-2xl backdrop-blur-xl">
+
+            <div className="flex items-center gap-2 text-xs font-black tracking-[0.15em] text-purple-400">
+              🔒 CHECKOUT SEGURO
             </div>
 
-            <h2>Finalizar compra</h2>
+            <h2 className="mt-5 text-4xl font-black">
+              Finalizar compra
+            </h2>
 
-            <p className="payment-description">
-              Informe seu e-mail para receber as instruções de pagamento e
-              acompanhar seu pedido.
+            <p className="mt-4 leading-7 text-zinc-400">
+              Informe seu e-mail para receber as instruções de pagamento e acompanhar seu pedido.
             </p>
 
-            <label htmlFor="email">E-mail</label>
+            <div className="mt-8">
 
-            <input
-              id="email"
-              type="email"
-              placeholder="voce@email.com"
-            />
+              <label
+                htmlFor="email"
+                className="text-sm font-bold"
+              >
+                E-mail
+              </label>
 
-            <button type="button" className="payment-button">
+              <input
+                id="email"
+                type="email"
+                placeholder="voce@email.com"
+                className="mt-3 w-full rounded-xl border border-white/10 bg-black/30 px-4 py-4 text-white outline-none transition placeholder:text-zinc-600 focus:border-purple-500"
+              />
+
+            </div>
+
+            <button
+              type="button"
+              className="mt-5 w-full rounded-xl bg-purple-600 py-4 font-black transition hover:-translate-y-0.5 hover:bg-purple-500 hover:shadow-xl hover:shadow-purple-900/30"
+            >
               Continuar para pagamento →
             </button>
 
-            <div className="payment-info">
-              <span>PIX</span>
-              <span>Pagamento rápido</span>
-              <span>Entrega digital</span>
+            <div className="mt-6 grid grid-cols-3 gap-2 text-center text-[10px] font-bold text-zinc-500">
+              <div className="rounded-lg border border-white/5 bg-black/20 p-3">
+                <span className="text-purple-400">PIX</span>
+              </div>
+
+              <div className="rounded-lg border border-white/5 bg-black/20 p-3">
+                RÁPIDO
+              </div>
+
+              <div className="rounded-lg border border-white/5 bg-black/20 p-3">
+                DIGITAL
+              </div>
             </div>
 
-            <p className="small-text">
-              Ao continuar, você será direcionado para a etapa de pagamento.
+            <p className="mt-7 text-center text-xs leading-5 text-zinc-600">
+              O pagamento será processado com segurança.
+              Após a confirmação, o pedido poderá ser liberado.
             </p>
+
           </section>
+
         </div>
       </div>
-
-      <style jsx>{`
-        .checkout-page {
-          min-height: 100vh;
-          background:
-            radial-gradient(
-              circle at 15% 10%,
-              rgba(124, 58, 237, 0.16),
-              transparent 30%
-            ),
-            radial-gradient(
-              circle at 85% 80%,
-              rgba(168, 85, 247, 0.1),
-              transparent 30%
-            ),
-            #050208;
-          color: white;
-          padding: 120px 20px 70px;
-        }
-
-        .checkout-container {
-          width: 100%;
-          max-width: 1100px;
-          margin: 0 auto;
-        }
-
-        .back-link {
-          display: inline-block;
-          color: #a78bfa;
-          text-decoration: none;
-          font-weight: 700;
-          margin-bottom: 28px;
-        }
-
-        .back-link:hover {
-          color: white;
-        }
-
-        .checkout-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 22px;
-        }
-
-        .product-card,
-        .payment-card {
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          background: rgba(255, 255, 255, 0.035);
-          backdrop-filter: blur(24px);
-          border-radius: 30px;
-          padding: 38px;
-          box-shadow: 0 30px 100px rgba(0, 0, 0, 0.3);
-        }
-
-        .product-card {
-          position: relative;
-          overflow: hidden;
-        }
-
-        .product-card::before {
-          content: "";
-          position: absolute;
-          width: 260px;
-          height: 260px;
-          border-radius: 50%;
-          background: rgba(124, 58, 237, 0.18);
-          filter: blur(80px);
-          top: -140px;
-          right: -100px;
-        }
-
-        .badge {
-          position: relative;
-          display: inline-block;
-          padding: 8px 12px;
-          border-radius: 999px;
-          background: rgba(124, 58, 237, 0.14);
-          border: 1px solid rgba(167, 139, 250, 0.2);
-          color: #c4b5fd;
-          font-size: 11px;
-          font-weight: 900;
-          letter-spacing: 0.08em;
-        }
-
-        .eyebrow {
-          margin: 35px 0 10px;
-          color: #a78bfa;
-          font-size: 12px;
-          font-weight: 900;
-          letter-spacing: 0.15em;
-        }
-
-        h1 {
-          position: relative;
-          margin: 0;
-          font-size: clamp(38px, 5vw, 58px);
-          line-height: 1;
-          letter-spacing: -0.04em;
-        }
-
-        .description {
-          position: relative;
-          color: #a1a1aa;
-          font-size: 16px;
-          line-height: 1.7;
-          margin: 20px 0;
-          max-width: 480px;
-        }
-
-        .price {
-          position: relative;
-          margin-top: 30px;
-          font-size: 52px;
-          font-weight: 950;
-          letter-spacing: -0.05em;
-        }
-
-        .price span {
-          font-size: 18px;
-          color: #a78bfa;
-          margin-right: 6px;
-          vertical-align: top;
-        }
-
-        .divider {
-          height: 1px;
-          background: rgba(255, 255, 255, 0.08);
-          margin: 32px 0;
-        }
-
-        h2 {
-          margin: 0;
-          font-size: 24px;
-          font-weight: 900;
-        }
-
-        .features {
-          display: grid;
-          gap: 14px;
-          margin-top: 22px;
-        }
-
-        .feature {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          color: #d4d4d8;
-        }
-
-        .feature span {
-          width: 25px;
-          height: 25px;
-          display: grid;
-          place-items: center;
-          border-radius: 50%;
-          background: rgba(124, 58, 237, 0.18);
-          color: #c4b5fd;
-          font-weight: 900;
-        }
-
-        .secure {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          color: #a78bfa;
-          font-size: 12px;
-          font-weight: 900;
-          letter-spacing: 0.1em;
-        }
-
-        .payment-card h2 {
-          font-size: 34px;
-          margin-top: 22px;
-        }
-
-        .payment-description {
-          color: #a1a1aa;
-          line-height: 1.6;
-          margin: 12px 0 28px;
-        }
-
-        label {
-          display: block;
-          margin-bottom: 9px;
-          font-size: 14px;
-          font-weight: 800;
-        }
-
-        input {
-          width: 100%;
-          box-sizing: border-box;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 14px;
-          background: rgba(0, 0, 0, 0.3);
-          color: white;
-          padding: 16px;
-          outline: none;
-          font-size: 15px;
-        }
-
-        input:focus {
-          border-color: rgba(167, 139, 250, 0.7);
-          box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
-        }
-
-        .payment-button {
-          width: 100%;
-          border: 0;
-          border-radius: 14px;
-          padding: 17px;
-          margin-top: 18px;
-          background: linear-gradient(135deg, #7c3aed, #9333ea);
-          color: white;
-          font-size: 15px;
-          font-weight: 900;
-          cursor: pointer;
-          transition: 0.2s;
-        }
-
-        .payment-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 15px 35px rgba(124, 58, 237, 0.3);
-        }
-
-        .payment-info {
-          display: flex;
-          justify-content: space-between;
-          gap: 8px;
-          margin-top: 22px;
-          color: #71717a;
-          font-size: 11px;
-          font-weight: 800;
-        }
-
-        .payment-info span:first-child {
-          color: #a78bfa;
-        }
-
-        .small-text {
-          color: #52525b;
-          font-size: 11px;
-          line-height: 1.5;
-          text-align: center;
-          margin-top: 25px;
-        }
-
-        @media (max-width: 800px) {
-          .checkout-page {
-            padding-top: 90px;
-          }
-
-          .checkout-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .product-card,
-          .payment-card {
-            padding: 26px;
-            border-radius: 24px;
-          }
-
-          .price {
-            font-size: 44px;
-          }
-        }
-      `}</style>
     </main>
   );
 }
