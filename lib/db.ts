@@ -3,9 +3,12 @@ import { createClient } from "@supabase/supabase-js";
 const supabaseUrl = process.env.SUPABASE_URL!;
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+export const supabase = createClient(
+  supabaseUrl,
+  supabaseKey
+);
 
-export type Order = {
+export async function createOrder(order: {
   id: string;
   payment_id: string;
   external_reference: string;
@@ -13,21 +16,10 @@ export type Order = {
   email: string;
   status: string;
   delivered: boolean;
-  created_at: string;
-};
-
-export async function createOrder(order: Omit<Order, "created_at">) {
+}) {
   const { data, error } = await supabase
     .from("orders")
-    .insert({
-      id: order.id,
-      payment_id: order.payment_id,
-      external_reference: order.external_reference,
-      product_key: order.product_key,
-      email: order.email,
-      status: order.status,
-      delivered: order.delivered,
-    })
+    .insert(order)
     .select()
     .single();
 
@@ -36,7 +28,9 @@ export async function createOrder(order: Omit<Order, "created_at">) {
   return data;
 }
 
-export async function getOrderByPaymentId(paymentId: string) {
+export async function getOrderByPaymentId(
+  paymentId: string
+) {
   const { data, error } = await supabase
     .from("orders")
     .select("*")
@@ -55,22 +49,6 @@ export async function updateOrderStatus(
   const { data, error } = await supabase
     .from("orders")
     .update({ status })
-    .eq("payment_id", paymentId)
-    .select()
-    .single();
-
-  if (error) throw error;
-
-  return data;
-}
-
-export async function markOrderDelivered(paymentId: string) {
-  const { data, error } = await supabase
-    .from("orders")
-    .update({
-      delivered: true,
-      status: "delivered",
-    })
     .eq("payment_id", paymentId)
     .select()
     .single();
