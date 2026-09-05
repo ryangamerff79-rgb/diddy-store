@@ -1,7 +1,19 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.SUPABASE_URL!;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+if (!supabaseUrl) {
+  throw new Error("SUPABASE_URL não está configurada.");
+}
+
+if (!supabaseKey) {
+  throw new Error("SUPABASE_SERVICE_ROLE_KEY não está configurada.");
+}
+
+if (!supabaseUrl.startsWith("http://") && !supabaseUrl.startsWith("https://")) {
+  throw new Error("SUPABASE_URL precisa começar com http:// ou https://.");
+}
 
 export const supabase = createClient(
   supabaseUrl,
@@ -23,7 +35,9 @@ export async function createOrder(order: {
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   return data;
 }
@@ -37,7 +51,9 @@ export async function getOrderByPaymentId(
     .eq("payment_id", paymentId)
     .maybeSingle();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   return data;
 }
@@ -53,7 +69,9 @@ export async function updateOrderStatus(
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    throw error;
+  }
 
   return data;
 }
