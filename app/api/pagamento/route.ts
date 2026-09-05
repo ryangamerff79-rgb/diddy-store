@@ -69,14 +69,11 @@ export async function POST(req: Request) {
         transaction_amount: product.price,
         description: `Diddy Store - ${product.name}`,
         payment_method_id: "pix",
-
         payer: {
           email: email.trim(),
         },
-
         external_reference: externalReference,
       },
-
       requestOptions: {
         idempotencyKey: crypto.randomUUID(),
       },
@@ -111,20 +108,14 @@ export async function POST(req: Request) {
       paymentId,
       status: result.status,
       externalReference,
-
       qrCode: transactionData.qr_code || "",
-
       qrCodeBase64:
         transactionData.qr_code_base64 || "",
-
       ticketUrl:
         transactionData.ticket_url || "",
     });
   } catch (error: any) {
-    console.error(
-      "ERRO MERCADO PAGO:",
-      error
-    );
+    console.error("ERRO:", error);
 
     return NextResponse.json(
       {
