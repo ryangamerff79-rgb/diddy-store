@@ -1,2 +1,62 @@
-import {NextResponse} from "next/server";import {byPayment,save} from "../../../lib/db";
-export async function POST(req:Request){try{const b=await req.json();const id=b?.data?.id||b?.id;if(id&&process.env.MERCADOPAGO_ACCESS_TOKEN){const r=await fetch(`https://api.mercadopago.com/v1/payments/${id}`,{headers:{Authorization:`Bearer ${process.env.MERCADOPAGO_ACCESS_TOKEN}`},cache:"no-store"});if(r.ok){const p=await r.json();const o=byPayment(String(id));if(o)save({...o,status:p.status||o.status,delivered:p.status==="approved"})}}return NextResponse.json({ok:true})}catch{return NextResponse.json({ok:true})}}
+import { NextResponse } from "next/server";
+import {
+  getOrderByPaymentId,
+  updateOrderStatus,
+} from "../../../lib/db";
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+
+    const paymentId =
+      body?.data?.id ||
+      body?.id ||
+      body?.resource?.split("/").pop();
+
+    if (!paymentId) {
+      return NextResponse.json({ ok: true });
+    }
+
+    const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
+
+    if (!accessToken) {
+      return NextResponse.json({ ok: true });
+    }
+
+    const response = await fetch(
+      `https://api.mercadopago.com/v1/payments/${paymentId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      return NextResponse.json({ ok: true });
+    }
+
+    const payment = await response.json();
+
+    const order = await getOrderByPaymentId(String(paymentId));
+
+    if (!order) {
+      return NextResponse.json({ ok: true });
+    }
+
+    const status = payment.status || order.status;
+
+    await updateOrderStatus(
+      String(paymentId),
+      status
+    );
+
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    console.error("Erro no webhook:", error);
+
+    return NextResponse.json({ ok: true });
+  }
+}
