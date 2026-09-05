@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { MercadoPagoConfig, Payment } from "mercadopago";
 import crypto from "node:crypto";
-import { createOrder } from "@/lib/db";
+import { createOrder } from "../../../lib/db";
 
 const products = {
   omega: { name: "OMEGA", price: 35 },
