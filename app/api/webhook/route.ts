@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import {
   getOrderByPaymentId,
-  updateOrderStatus,
+  updateOrderPayment,
 } from "../../../lib/db";
 
 export async function POST(req: Request) {
@@ -40,17 +40,21 @@ export async function POST(req: Request) {
 
     const payment = await response.json();
 
-    const order = await getOrderByPaymentId(String(paymentId));
+    const order = await getOrderByPaymentId(
+      String(paymentId)
+    );
 
     if (!order) {
       return NextResponse.json({ ok: true });
     }
 
     const status = payment.status || order.status;
+    const delivered = status === "approved";
 
-    await updateOrderStatus(
+    await updateOrderPayment(
       String(paymentId),
-      status
+      status,
+      delivered
     );
 
     return NextResponse.json({ ok: true });
