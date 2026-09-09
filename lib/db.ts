@@ -11,8 +11,13 @@ if (!supabaseKey) {
   throw new Error("SUPABASE_SERVICE_ROLE_KEY não está configurada.");
 }
 
-if (!supabaseUrl.startsWith("http://") && !supabaseUrl.startsWith("https://")) {
-  throw new Error("SUPABASE_URL precisa começar com http:// ou https://.");
+if (
+  !supabaseUrl.startsWith("http://") &&
+  !supabaseUrl.startsWith("https://")
+) {
+  throw new Error(
+    "SUPABASE_URL precisa começar com http:// ou https://."
+  );
 }
 
 export const supabase = createClient(
@@ -58,13 +63,17 @@ export async function getOrderByPaymentId(
   return data;
 }
 
-export async function updateOrderStatus(
+export async function updateOrderPayment(
   paymentId: string,
-  status: string
+  status: string,
+  delivered: boolean
 ) {
   const { data, error } = await supabase
     .from("orders")
-    .update({ status })
+    .update({
+      status,
+      delivered,
+    })
     .eq("payment_id", paymentId)
     .select()
     .single();
