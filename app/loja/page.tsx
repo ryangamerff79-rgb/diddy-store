@@ -7,118 +7,135 @@ const products = [
   {
     id: "omega",
     name: "OMEGA",
-    short: "ULTIMATE PERFORMANCE",
+    subtitle: "ULTIMATE PERFORMANCE",
     description:
-      "Nossa otimização mais completa para quem quer extrair o máximo da experiência no PC.",
+      "Nossa otimização mais completa para quem busca uma experiência de desempenho mais avançada.",
     price: 35,
     oldPrice: 49.9,
     badge: "🔥 MAIS VENDIDO",
-    accent: "violet",
-    icon: "⚡",
-    features: [
-      "Otimização avançada",
-      "Ajustes de desempenho",
-      "Foco em FPS e fluidez",
-      "Pack completo",
-    ],
+    category: "OTIMIZAÇÃO",
+    icon: "👑",
+    featured: true,
   },
   {
     id: "suprema",
     name: "SUPREMA",
-    short: "EXTREME PERFORMANCE",
+    subtitle: "ADVANCED PERFORMANCE",
     description:
-      "Pacote avançado focado em desempenho, estabilidade e uma experiência mais fluida.",
+      "Pacote avançado focado em desempenho e estabilidade para o uso diário e gaming.",
     price: 20,
     oldPrice: 29.9,
     badge: "⭐ RECOMENDADO",
-    accent: "blue",
-    icon: "👑",
-    features: [
-      "Otimizações avançadas",
-      "Melhorias de desempenho",
-      "Ajustes para jogos",
-      "Configuração completa",
-    ],
+    category: "OTIMIZAÇÃO",
+    icon: "⚡",
+    featured: false,
   },
   {
     id: "avancada",
     name: "AVANÇADA",
-    short: "PERFORMANCE BOOST",
+    subtitle: "BALANCED PERFORMANCE",
     description:
-      "Uma opção equilibrada para melhorar o desempenho do Windows e dos seus jogos.",
+      "Uma opção equilibrada para quem deseja começar a trabalhar a experiência do sistema.",
     price: 10,
-    oldPrice: 14.9,
-    badge: null,
-    accent: "cyan",
+    oldPrice: 15.9,
+    badge: "",
+    category: "OTIMIZAÇÃO",
     icon: "🚀",
-    features: [
-      "Otimizações do sistema",
-      "Foco em desempenho",
-      "Configurações para jogos",
-      "Fácil utilização",
-    ],
+    featured: false,
   },
   {
     id: "basica",
     name: "BÁSICA",
-    short: "STARTER BOOST",
+    subtitle: "STARTER PERFORMANCE",
     description:
-      "O pacote essencial para começar sua experiência de otimização.",
+      "O pacote essencial para começar a explorar uma experiência de sistema mais organizada.",
     price: 5,
-    oldPrice: 7.9,
-    badge: null,
-    accent: "green",
-    icon: "🛠️",
-    features: [
-      "Otimização básica",
-      "Ajustes essenciais",
-      "Melhor experiência",
-      "Ideal para começar",
-    ],
+    oldPrice: 8.9,
+    badge: "",
+    category: "OTIMIZAÇÃO",
+    icon: "⚙️",
+    featured: false,
   },
   {
     id: "fivem",
     name: "FIVEM BOOST",
-    short: "FIVEM PERFORMANCE",
+    subtitle: "FIVEM PERFORMANCE",
     description:
-      "Pack focado em desempenho e configurações para uma experiência mais fluida no FiveM.",
+      "Pack direcionado para usuários que querem focar sua experiência no FiveM.",
     price: 10,
-    oldPrice: 14.9,
+    oldPrice: 15.9,
     badge: "🎮 FIVEM",
-    accent: "orange",
+    category: "FIVEM",
     icon: "🎮",
-    features: [
-      "Foco em FiveM",
-      "Ajustes de desempenho",
-      "Mais estabilidade",
-      "Configurações específicas",
-    ],
+    featured: false,
   },
   {
     id: "sensi",
     name: "PACK SENSI",
-    short: "AIM CONFIG",
+    subtitle: "GAMING SETTINGS",
     description:
-      "Pack de configurações de sensibilidade para sua experiência de jogo.",
+      "Pack focado em configurações de sensibilidade e experiência de gameplay.",
     price: 5,
-    oldPrice: 7.9,
+    oldPrice: 8.9,
     badge: "🎯 GAMING",
-    accent: "pink",
+    category: "GAMING",
     icon: "🎯",
-    features: [
-      "Configurações de sensi",
-      "Perfil para jogos",
-      "Ajustes rápidos",
-      "Setup simplificado",
-    ],
+    featured: false,
   },
 ];
 
 const categories = [
-  "TODOS",
-  "OTIMIZAÇÃO",
-  "FIVEM",
-  "GAMING",
+  {
+    id: "TODOS",
+    label: "Todos os produtos",
+    icon: "◈",
+  },
+  {
+    id: "OTIMIZAÇÃO",
+    label: "Otimização",
+    icon: "⚡",
+  },
+  {
+    id: "FIVEM",
+    label: "FiveM",
+    icon: "🎮",
+  },
+  {
+    id: "GAMING",
+    label: "Gaming",
+    icon: "🎯",
+  },
+];
+
+const comparison = [
+  {
+    name: "BÁSICA",
+    price: "R$ 5",
+    level: "Essencial",
+    focus: "Sistema",
+    recommended: false,
+  },
+  {
+    name: "AVANÇADA",
+    price: "R$ 10",
+    level: "Intermediário",
+    focus: "Sistema + Gaming",
+    recommended: false,
+  },
+  {
+    name: "SUPREMA",
+    price: "R$ 20",
+    level: "Avançado",
+    focus: "Desempenho",
+    recommended: true,
+  },
+  {
+    name: "OMEGA",
+    price: "R$ 35",
+    level: "Completo",
+    focus: "Performance",
+    recommended: false,
+  },
 ];
 
 export default function LojaPage() {
@@ -126,2016 +143,800 @@ export default function LojaPage() {
 
   const filteredProducts = products.filter((product) => {
     if (category === "TODOS") return true;
-    if (category === "FIVEM") return product.id === "fivem";
-    if (category === "GAMING") return product.id === "sensi";
-    return ["omega", "suprema", "avancada", "basica"].includes(product.id);
+    return product.category === category;
   });
 
   return (
-    <>
-      <style jsx global>{`
-        * {
-          box-sizing: border-box;
-        }
+    <main className="min-h-screen overflow-hidden bg-[#030106] text-white">
 
-        html {
-          scroll-behavior: smooth;
-        }
+      {/* BACKGROUND */}
 
-        body {
-          margin: 0;
-          background: #030305;
-          color: #fff;
-          font-family:
-            Inter,
-            ui-sans-serif,
-            system-ui,
-            -apple-system,
-            BlinkMacSystemFont,
-            "Segoe UI",
-            sans-serif;
-        }
+      <div className="pointer-events-none fixed inset-0 -z-10">
+        <div className="absolute left-[-15%] top-[-10%] h-[550px] w-[550px] rounded-full bg-purple-700/20 blur-[160px]" />
 
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
+        <div className="absolute right-[-15%] top-[25%] h-[500px] w-[500px] rounded-full bg-fuchsia-700/10 blur-[160px]" />
 
-        button {
-          font-family: inherit;
-        }
+        <div className="absolute bottom-[-15%] left-[25%] h-[500px] w-[500px] rounded-full bg-purple-900/20 blur-[160px]" />
 
-        ::selection {
-          background: #8b5cf6;
-          color: white;
-        }
-      `}</style>
+        <div
+          className="absolute inset-0 opacity-[0.06]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(168,85,247,.5) 1px, transparent 1px), linear-gradient(90deg, rgba(168,85,247,.5) 1px, transparent 1px)",
+            backgroundSize: "70px 70px",
+          }}
+        />
+      </div>
 
-      <main className="store">
-        <div className="noise" />
-        <div className="grid" />
+      {/* NAVBAR */}
 
-        <div className="ambient ambient-one" />
-        <div className="ambient ambient-two" />
-        <div className="ambient ambient-three" />
+      <header className="sticky top-0 z-50 border-b border-white/5 bg-black/70 backdrop-blur-2xl">
 
-        {/* NAVBAR */}
-        <header className="navbar">
-          <div className="nav-container">
-            <Link href="/" className="brand">
-              <div className="brand-mark">
-                <span>⚡</span>
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-6">
+
+          <Link href="/" className="group flex items-center gap-3">
+
+            <div className="grid h-11 w-11 place-items-center rounded-2xl border border-purple-500/30 bg-purple-500/10 text-xl shadow-[0_0_30px_rgba(168,85,247,.15)] transition duration-300 group-hover:scale-110 group-hover:bg-purple-500/20">
+              👑
+            </div>
+
+            <div>
+              <div className="font-black tracking-tight">
+                DIDDY <span className="text-purple-500">STORE</span>
               </div>
 
-              <div className="brand-text">
-                <strong>
-                  DIDDY <em>STORE</em>
-                </strong>
-                <small>PERFORMANCE STORE</small>
+              <div className="text-[9px] font-bold tracking-[.25em] text-zinc-600">
+                PERFORMANCE STORE
               </div>
+            </div>
+
+          </Link>
+
+          <nav className="hidden items-center gap-8 text-xs font-black text-zinc-500 md:flex">
+            <Link href="/" className="transition hover:text-white">
+              INÍCIO
             </Link>
 
-            <nav className="nav-links">
-              <Link href="/">INÍCIO</Link>
-              <a href="#produtos" className="active">
-                PRODUTOS
-              </a>
-              <a href="#beneficios">BENEFÍCIOS</a>
-            </nav>
+            <a
+              href="#produtos"
+              className="text-purple-400 transition hover:text-purple-300"
+            >
+              PRODUTOS
+            </a>
 
             <a
-              href="https://discord.gg/sHe3uSR57b"
-              target="_blank"
-              rel="noreferrer"
-              className="discord-button"
+              href="#comparativo"
+              className="transition hover:text-white"
             >
-              <span>◈</span>
-              DISCORD
+              COMPARAR
             </a>
-          </div>
-        </header>
 
-        {/* HERO */}
-        <section className="hero">
-          <div className="hero-container">
-            <div className="hero-left">
-              <div className="live-pill">
-                <span className="live-dot" />
-                LOJA ONLINE
-                <i />
-                ENTREGA DIGITAL
-              </div>
+            <a
+              href="#beneficios"
+              className="transition hover:text-white"
+            >
+              BENEFÍCIOS
+            </a>
+          </nav>
 
-              <h1>
-                MAIS
-                <br />
-                <span>DESEMPENHO.</span>
-              </h1>
+          <a
+            href="https://discord.gg/sHe3uSR57b"
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-xl bg-purple-600 px-4 py-3 text-xs font-black shadow-[0_0_25px_rgba(168,85,247,.25)] transition hover:scale-105 hover:bg-purple-500"
+          >
+            DISCORD
+          </a>
 
-              <p className="hero-description">
-                Otimize sua experiência. Melhore a fluidez.
-                <br />
-                Escolha o pack ideal para seu setup.
-              </p>
+        </div>
 
-              <div className="hero-actions">
-                <a href="#produtos" className="primary-action">
-                  VER PRODUTOS
-                  <span>↓</span>
-                </a>
+      </header>
 
-                <a href="#beneficios" className="secondary-action">
-                  SAIBA MAIS
-                </a>
-              </div>
+      {/* HERO */}
 
-              <div className="hero-stats">
-                <div>
-                  <strong>6+</strong>
-                  <span>PACKS</span>
-                </div>
+      <section className="relative px-5 pb-20 pt-20 sm:px-6 sm:pt-28">
 
-                <i />
+        <div className="mx-auto grid max-w-7xl items-center gap-16 lg:grid-cols-[1fr_.8fr]">
 
-                <div>
-                  <strong>100%</strong>
-                  <span>DIGITAL</span>
-                </div>
+          <div>
 
-                <i />
-
-                <div>
-                  <strong>24/7</strong>
-                  <span>ACESSO</span>
-                </div>
-              </div>
+            <div className="inline-flex items-center gap-3 rounded-full border border-purple-500/20 bg-purple-500/5 px-4 py-2 text-[10px] font-black tracking-[.2em] text-purple-300">
+              <span className="h-2 w-2 animate-pulse rounded-full bg-purple-400 shadow-[0_0_15px_#a855f7]" />
+              LOJA ONLINE
+              <span className="h-3 w-px bg-white/10" />
+              ENTREGA DIGITAL
             </div>
 
-            {/* HERO EMBED */}
-            <div className="hero-visual">
-              <div className="visual-ring ring-one" />
-              <div className="visual-ring ring-two" />
-              <div className="visual-ring ring-three" />
+            <h1 className="mt-8 text-6xl font-black leading-[.88] tracking-[-.06em] sm:text-8xl lg:text-[105px]">
 
-              <div className="floating-card card-top">
-                <span className="card-icon">↗</span>
-                <div>
-                  <small>PERFORMANCE</small>
-                  <strong>BOOST MODE</strong>
-                </div>
+              ESCOLHA
+              <br />
+
+              <span className="bg-gradient-to-r from-purple-300 via-purple-500 to-fuchsia-500 bg-clip-text text-transparent">
+                SEU PACK.
+              </span>
+
+            </h1>
+
+            <p className="mt-8 max-w-xl text-base leading-7 text-zinc-500 sm:text-lg">
+              Encontre a solução que combina com o seu objetivo.
+              Explore nossos packs e escolha o nível de experiência
+              que você procura.
+            </p>
+
+            <div className="mt-9 flex flex-wrap gap-3">
+
+              <a
+                href="#produtos"
+                className="rounded-2xl bg-purple-600 px-7 py-4 text-sm font-black shadow-[0_0_40px_rgba(168,85,247,.25)] transition hover:-translate-y-1 hover:bg-purple-500"
+              >
+                EXPLORAR PRODUTOS ↓
+              </a>
+
+              <Link
+                href="/"
+                className="rounded-2xl border border-white/10 bg-white/[0.02] px-7 py-4 text-sm font-black text-zinc-400 transition hover:border-purple-500/30 hover:text-white"
+              >
+                VOLTAR AO INÍCIO
+              </Link>
+
+            </div>
+
+            <div className="mt-12 grid max-w-xl grid-cols-3 border-y border-white/5 py-6">
+
+              <div>
+                <strong className="text-2xl font-black">06</strong>
+                <p className="mt-1 text-[9px] font-black tracking-[.2em] text-zinc-700">
+                  PACKS
+                </p>
               </div>
 
-              <div className="performance-card">
-                <div className="performance-top">
+              <div className="border-l border-white/5 pl-5">
+                <strong className="text-2xl font-black">PIX</strong>
+                <p className="mt-1 text-[9px] font-black tracking-[.2em] text-zinc-700">
+                  PAGAMENTO
+                </p>
+              </div>
+
+              <div className="border-l border-white/5 pl-5">
+                <strong className="text-2xl font-black">24/7</strong>
+                <p className="mt-1 text-[9px] font-black tracking-[.2em] text-zinc-700">
+                  ACESSO
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* HERO VISUAL */}
+
+          <div className="relative hidden lg:block">
+
+            <div className="absolute inset-0 rounded-full bg-purple-600/20 blur-[110px]" />
+
+            <div className="relative aspect-square">
+
+              <div className="absolute inset-[8%] rounded-full border border-purple-500/10" />
+
+              <div className="absolute inset-[18%] rounded-full border border-purple-500/10" />
+
+              <div className="absolute inset-[28%] rounded-full border border-purple-500/10" />
+
+              <div className="absolute left-1/2 top-1/2 h-[55%] w-[55%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-br from-purple-600/20 to-transparent blur-2xl" />
+
+              <div className="absolute left-1/2 top-1/2 w-[70%] -translate-x-1/2 -translate-y-1/2 rounded-[35px] border border-purple-500/30 bg-[#09050f]/90 p-7 shadow-[0_0_80px_rgba(168,85,247,.15)] backdrop-blur-xl">
+
+                <div className="flex items-center justify-between">
+
                   <div>
-                    <span className="mini-label">
+                    <p className="text-[9px] font-black tracking-[.25em] text-purple-400">
                       DIDDY PERFORMANCE
-                    </span>
-                    <h3>MAX POWER</h3>
+                    </p>
+
+                    <h3 className="mt-2 text-3xl font-black">
+                      MAX POWER
+                    </h3>
                   </div>
 
-                  <div className="power-icon">⚡</div>
+                  <div className="grid h-12 w-12 place-items-center rounded-2xl bg-purple-500/10 text-xl">
+                    ⚡
+                  </div>
+
                 </div>
 
-                <div className="fake-graph">
-                  <div className="graph-line">
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
+                <div className="mt-8 h-28 overflow-hidden rounded-2xl border border-white/5 bg-black/40 p-4">
+
+                  <div className="flex h-full items-end gap-2">
+
+                    {[35, 48, 42, 60, 55, 72, 66, 82, 76, 95].map(
+                      (height, index) => (
+                        <div
+                          key={index}
+                          className="flex-1 rounded-t-md bg-gradient-to-t from-purple-700/20 to-purple-400/80 transition hover:from-purple-500 hover:to-purple-300"
+                          style={{
+                            height: `${height}%`,
+                          }}
+                        />
+                      )
+                    )}
+
                   </div>
 
-                  <div className="graph-fill" />
                 </div>
 
-                <div className="graph-bottom">
-                  <div>
-                    <span>PERFORMANCE</span>
-                    <strong>MAX</strong>
+                <div className="mt-5 grid grid-cols-2 gap-3">
+
+                  <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-4">
+                    <p className="text-[8px] font-black text-zinc-700">
+                      PERFORMANCE
+                    </p>
+
+                    <p className="mt-1 text-lg font-black text-purple-300">
+                      MAX
+                    </p>
                   </div>
 
-                  <div>
-                    <span>MODE</span>
-                    <strong>ACTIVE</strong>
+                  <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-4">
+                    <p className="text-[8px] font-black text-zinc-700">
+                      MODE
+                    </p>
+
+                    <p className="mt-1 text-lg font-black text-green-400">
+                      ACTIVE
+                    </p>
                   </div>
+
                 </div>
+
               </div>
 
-              <div className="floating-card card-bottom">
-                <span className="status-check">✓</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* TRUST BAR */}
+
+      <section className="border-y border-white/5 bg-white/[0.015]">
+
+        <div className="mx-auto grid max-w-7xl md:grid-cols-4">
+
+          {[
+            ["⚡", "FOCO EM PERFORMANCE", "Experiência pensada para gamers"],
+            ["💳", "PAGAMENTO PIX", "Mercado Pago"],
+            ["🚀", "ENTREGA DIGITAL", "Processo automatizado"],
+            ["💬", "SUPORTE", "Entre em nossa comunidade"],
+          ].map(([icon, title, description]) => (
+            <div
+              key={title}
+              className="border-b border-white/5 p-6 last:border-0 md:border-b-0 md:border-r md:last:border-r-0"
+            >
+              <div className="flex items-center gap-4">
+
+                <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-purple-500/10">
+                  {icon}
+                </div>
+
                 <div>
-                  <small>STATUS</small>
-                  <strong>OPTIMIZED</strong>
+                  <p className="text-xs font-black">
+                    {title}
+                  </p>
+
+                  <p className="mt-1 text-[11px] text-zinc-600">
+                    {description}
+                  </p>
                 </div>
+
               </div>
             </div>
-          </div>
+          ))}
 
-          <div className="scroll-indicator">
-            <span>SCROLL PARA EXPLORAR</span>
-            <div />
-          </div>
-        </section>
+        </div>
 
-        {/* BENEFITS */}
-        <section id="beneficios" className="benefits">
-          <div className="section-container">
-            <div className="section-heading">
-              <div>
-                <span className="section-kicker">
-                  POR QUE DIDDY STORE?
-                </span>
+      </section>
 
-                <h2>
-                  FEITO PARA
-                  <br />
-                  <span>PERFORMANCE.</span>
-                </h2>
-              </div>
+      {/* PRODUCTS */}
 
-              <p>
-                Uma seleção de packs desenvolvidos para diferentes
-                necessidades, desde otimizações essenciais até
-                configurações específicas para gaming.
+      <section id="produtos" className="px-5 py-24 sm:px-6 sm:py-32">
+
+        <div className="mx-auto max-w-7xl">
+
+          <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+
+            <div>
+
+              <p className="text-[10px] font-black tracking-[.3em] text-purple-400">
+                CATÁLOGO DIDDY STORE
               </p>
-            </div>
 
-            <div className="benefit-grid">
-              <div className="benefit-card">
-                <div className="benefit-number">01</div>
-                <div className="benefit-icon">⚡</div>
-                <h3>FOCO EM DESEMPENHO</h3>
-                <p>
-                  Packs organizados para priorizar uma experiência
-                  mais fluida no seu computador.
-                </p>
-              </div>
-
-              <div className="benefit-card">
-                <div className="benefit-number">02</div>
-                <div className="benefit-icon">🎮</div>
-                <h3>GAMING</h3>
-                <p>
-                  Opções específicas para diferentes jogos e
-                  diferentes tipos de setup.
-                </p>
-              </div>
-
-              <div className="benefit-card">
-                <div className="benefit-number">03</div>
-                <div className="benefit-icon">🔒</div>
-                <h3>PROCESSO SIMPLES</h3>
-                <p>
-                  Compra digital com processo de pagamento
-                  organizado e entrega após confirmação.
-                </p>
-              </div>
-
-              <div className="benefit-card">
-                <div className="benefit-number">04</div>
-                <div className="benefit-icon">🚀</div>
-                <h3>VÁRIOS NÍVEIS</h3>
-                <p>
-                  Escolha entre diferentes packs de acordo com
-                  o que você procura.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* PRODUCTS */}
-        <section id="produtos" className="products-section">
-          <div className="section-container">
-            <div className="products-heading">
-              <div>
-                <span className="section-kicker">
-                  DIDDY STORE / PRODUCTS
+              <h2 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">
+                ENCONTRE
+                <br />
+                <span className="text-purple-500">
+                  SEU NÍVEL.
                 </span>
+              </h2>
 
-                <h2>
-                  ESCOLHA SEU
-                  <br />
-                  <span>PACK.</span>
-                </h2>
-              </div>
-
-              <div className="product-counter">
-                <strong>{filteredProducts.length}</strong>
-                <span>PRODUTOS DISPONÍVEIS</span>
-              </div>
             </div>
 
             {/* FILTERS */}
-            <div className="filters">
+
+            <div className="flex flex-wrap gap-2">
+
               {categories.map((item) => (
+
                 <button
-                  key={item}
-                  className={
-                    category === item ? "selected" : ""
-                  }
-                  onClick={() => setCategory(item)}
+                  key={item.id}
+                  onClick={() => setCategory(item.id)}
+                  className={`rounded-xl border px-4 py-3 text-xs font-black transition duration-300 ${
+                    category === item.id
+                      ? "border-purple-500/40 bg-purple-600 text-white shadow-[0_0_25px_rgba(168,85,247,.2)]"
+                      : "border-white/5 bg-white/[0.02] text-zinc-600 hover:border-purple-500/20 hover:text-white"
+                  }`}
                 >
-                  {item}
+                  <span className="mr-2">
+                    {item.icon}
+                  </span>
+
+                  {item.label}
                 </button>
+
               ))}
+
             </div>
 
-            {/* PRODUCT GRID */}
-            <div className="products-grid">
-              {filteredProducts.map((product, index) => (
-                <article
-                  className={`product-card ${product.accent} ${
-                    index === 0 ? "featured" : ""
-                  }`}
-                  key={product.id}
-                >
-                  {product.badge && (
-                    <div className="product-badge">
-                      {product.badge}
-                    </div>
-                  )}
+          </div>
 
-                  <div className="card-glow" />
+          {/* PRODUCT GRID */}
 
-                  <div className="product-head">
-                    <div className="product-symbol">
+          <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+
+            {filteredProducts.map((product, index) => (
+
+              <article
+                key={product.id}
+                className={`group relative overflow-hidden rounded-[30px] border ${
+                  product.featured
+                    ? "border-purple-500/40 shadow-[0_0_60px_rgba(168,85,247,.1)]"
+                    : "border-white/5"
+                } bg-[#08050d] p-7 transition duration-500 hover:-translate-y-2 hover:border-purple-500/30`}
+              >
+
+                {product.featured && (
+                  <div className="absolute -right-20 -top-20 h-48 w-48 rounded-full bg-purple-600/20 blur-3xl transition group-hover:bg-purple-500/30" />
+                )}
+
+                {product.badge && (
+                  <div className="absolute right-6 top-6 rounded-full border border-purple-500/20 bg-purple-500/10 px-3 py-1.5 text-[9px] font-black text-purple-300">
+                    {product.badge}
+                  </div>
+                )}
+
+                <div className="relative">
+
+                  <div className="flex items-start justify-between">
+
+                    <div className="grid h-16 w-16 place-items-center rounded-2xl border border-purple-500/10 bg-purple-500/10 text-2xl transition duration-300 group-hover:scale-110 group-hover:rotate-3">
                       {product.icon}
                     </div>
 
-                    <div className="product-code">
-                      DIDDY / {String(index + 1).padStart(2, "0")}
-                    </div>
-                  </div>
-
-                  <div className="product-content">
-                    <span className="product-type">
-                      {product.short}
+                    <span className="rounded-lg border border-white/5 bg-white/[0.02] px-3 py-2 text-[8px] font-black tracking-[.15em] text-zinc-700">
+                      {product.category}
                     </span>
 
-                    <h3>{product.name}</h3>
-
-                    <p>{product.description}</p>
                   </div>
 
-                  <div className="product-features">
-                    {product.features.map((feature) => (
-                      <div key={feature}>
-                        <span>✓</span>
-                        {feature}
+                  <p className="mt-8 text-[9px] font-black tracking-[.25em] text-purple-400">
+                    {product.subtitle}
+                  </p>
+
+                  <h3 className="mt-2 text-3xl font-black tracking-tight">
+                    {product.name}
+                  </h3>
+
+                  <p className="mt-4 min-h-[72px] text-sm leading-6 text-zinc-600">
+                    {product.description}
+                  </p>
+
+                  <div className="my-7 h-px bg-white/5" />
+
+                  <div className="flex items-end justify-between">
+
+                    <div>
+
+                      <p className="text-[9px] font-black text-zinc-700">
+                        PAGAMENTO ÚNICO
+                      </p>
+
+                      <div className="mt-1 flex items-baseline gap-2">
+
+                        <span className="text-4xl font-black">
+                          R$ {product.price.toFixed(2).replace(".", ",")}
+                        </span>
+
+                        <del className="text-xs font-bold text-zinc-700">
+                          R$ {product.oldPrice.toFixed(2).replace(".", ",")}
+                        </del>
+
                       </div>
-                    ))}
-                  </div>
 
-                  <div className="product-footer">
-                    <div className="price-area">
-                      <span>POR APENAS</span>
-
-                      <div>
-                        <small>R$</small>
-                        <strong>
-                          {product.price
-                            .toFixed(2)
-                            .replace(".", ",")}
-                        </strong>
-                      </div>
-
-                      <del>
-                        R${" "}
-                        {product.oldPrice
-                          .toFixed(2)
-                          .replace(".", ",")}
-                      </del>
                     </div>
 
-                    <Link
-                      href={`/checkout?produto=${product.id}`}
-                      className="buy-button"
-                    >
-                      COMPRAR
-                      <span>→</span>
-                    </Link>
+                    <div className="grid h-10 w-10 place-items-center rounded-xl bg-purple-500/10 text-purple-400 transition group-hover:bg-purple-600 group-hover:text-white">
+                      →
+                    </div>
+
                   </div>
-                </article>
-              ))}
-            </div>
+
+                  <Link
+                    href={`/checkout?produto=${product.id}`}
+                    className="mt-7 block rounded-2xl bg-purple-600 px-5 py-4 text-center text-sm font-black shadow-[0_0_25px_rgba(168,85,247,.12)] transition duration-300 hover:bg-purple-500 hover:shadow-[0_0_35px_rgba(168,85,247,.25)]"
+                  >
+                    COMPRAR {product.name}
+                  </Link>
+
+                  <div className="mt-4 flex items-center justify-center gap-2 text-[9px] font-bold text-zinc-700">
+                    <span className="text-green-500">●</span>
+                    ENTREGA DIGITAL APÓS CONFIRMAÇÃO
+                  </div>
+
+                </div>
+
+              </article>
+
+            ))}
+
           </div>
-        </section>
 
-        {/* CTA */}
-        <section className="cta">
-          <div className="cta-container">
-            <div className="cta-glow" />
+        </div>
 
-            <span className="section-kicker">
-              PRONTO PARA O PRÓXIMO NÍVEL?
-            </span>
+      </section>
 
-            <h2>
-              SEU SETUP.
-              <br />
-              <span>SUA PERFORMANCE.</span>
-            </h2>
+      {/* WHICH ONE */}
 
-            <p>
-              Escolha seu pack e comece sua experiência com a
-              Diddy Store.
+      <section
+        id="beneficios"
+        className="border-y border-white/5 bg-white/[0.015] px-5 py-24 sm:px-6 sm:py-32"
+      >
+
+        <div className="mx-auto max-w-7xl">
+
+          <div className="max-w-2xl">
+
+            <p className="text-[10px] font-black tracking-[.3em] text-purple-400">
+              NÃO SABE QUAL ESCOLHER?
             </p>
 
-            <a href="#produtos" className="cta-button">
-              EXPLORAR PACKS
-              <span>↗</span>
-            </a>
-          </div>
-        </section>
+            <h2 className="mt-4 text-4xl font-black sm:text-6xl">
+              ENCONTRE O
+              <br />
+              <span className="text-purple-500">
+                PACK CERTO.
+              </span>
+            </h2>
 
-        {/* FOOTER */}
-        <footer>
-          <div className="footer-container">
-            <div className="footer-brand">
-              <div className="footer-logo">
-                <span>⚡</span>
-                DIDDY <em>STORE</em>
+          </div>
+
+          <div className="mt-14 grid gap-5 md:grid-cols-3">
+
+            <div className="rounded-3xl border border-white/5 bg-[#08050d] p-7">
+
+              <div className="text-3xl">💰</div>
+
+              <h3 className="mt-6 text-xl font-black">
+                QUERO COMEÇAR
+              </h3>
+
+              <p className="mt-3 text-sm leading-7 text-zinc-600">
+                Se você está começando, os packs Básica e Avançada
+                são opções mais acessíveis para conhecer a proposta.
+              </p>
+
+              <Link
+                href="/checkout?produto=basica"
+                className="mt-6 inline-block text-xs font-black text-purple-400"
+              >
+                VER BÁSICA →
+              </Link>
+
+            </div>
+
+            <div className="rounded-3xl border border-purple-500/30 bg-purple-500/[0.04] p-7 shadow-[0_0_50px_rgba(168,85,247,.07)]">
+
+              <div className="text-3xl">⭐</div>
+
+              <h3 className="mt-6 text-xl font-black">
+                QUERO EQUILÍBRIO
+              </h3>
+
+              <p className="mt-3 text-sm leading-7 text-zinc-600">
+                A Suprema busca entregar uma experiência mais completa
+                sem chegar ao preço do pacote máximo.
+              </p>
+
+              <Link
+                href="/checkout?produto=suprema"
+                className="mt-6 inline-block text-xs font-black text-purple-400"
+              >
+                VER SUPREMA →
+              </Link>
+
+            </div>
+
+            <div className="rounded-3xl border border-purple-500/30 bg-[#08050d] p-7">
+
+              <div className="text-3xl">👑</div>
+
+              <h3 className="mt-6 text-xl font-black">
+                QUERO O COMPLETO
+              </h3>
+
+              <p className="mt-3 text-sm leading-7 text-zinc-600">
+                OMEGA é nossa opção mais completa para quem quer
+                explorar o pacote de maior nível da loja.
+              </p>
+
+              <Link
+                href="/checkout?produto=omega"
+                className="mt-6 inline-block text-xs font-black text-purple-400"
+              >
+                VER OMEGA →
+              </Link>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* COMPARISON */}
+
+      <section
+        id="comparativo"
+        className="px-5 py-24 sm:px-6 sm:py-32"
+      >
+
+        <div className="mx-auto max-w-7xl">
+
+          <div className="text-center">
+
+            <p className="text-[10px] font-black tracking-[.3em] text-purple-400">
+              COMPARATIVO
+            </p>
+
+            <h2 className="mt-4 text-4xl font-black sm:text-5xl">
+              COMPARE OS
+              <span className="text-purple-500"> PACKS.</span>
+            </h2>
+
+            <p className="mx-auto mt-5 max-w-xl text-sm leading-7 text-zinc-600">
+              Veja rapidamente a proposta de cada nível antes de
+              escolher seu produto.
+            </p>
+
+          </div>
+
+          <div className="mt-14 overflow-hidden rounded-3xl border border-white/5 bg-[#08050d]">
+
+            <div className="hidden grid-cols-5 border-b border-white/5 px-6 py-5 text-[9px] font-black tracking-[.15em] text-zinc-700 md:grid">
+
+              <span>PACK</span>
+              <span>PREÇO</span>
+              <span>NÍVEL</span>
+              <span>FOCO</span>
+              <span>STATUS</span>
+
+            </div>
+
+            {comparison.map((item) => (
+
+              <div
+                key={item.name}
+                className="grid gap-3 border-b border-white/5 p-6 last:border-0 md:grid-cols-5 md:items-center"
+              >
+
+                <div className="font-black">
+                  {item.name}
+                </div>
+
+                <div className="font-black text-purple-400">
+                  {item.price}
+                </div>
+
+                <div className="text-sm text-zinc-500">
+                  {item.level}
+                </div>
+
+                <div className="text-sm text-zinc-500">
+                  {item.focus}
+                </div>
+
+                <div>
+                  {item.recommended ? (
+                    <span className="inline-block rounded-full bg-purple-500/10 px-3 py-1 text-[9px] font-black text-purple-300">
+                      ⭐ RECOMENDADO
+                    </span>
+                  ) : (
+                    <span className="text-[9px] font-black text-zinc-700">
+                      DISPONÍVEL
+                    </span>
+                  )}
+                </div>
+
               </div>
 
-              <p>
-                PERFORMANCE • FPS • OTIMIZAÇÃO
-              </p>
-            </div>
+            ))}
 
-            <div className="footer-links">
-              <Link href="/">INÍCIO</Link>
-              <a href="#produtos">PRODUTOS</a>
-              <a href="#beneficios">BENEFÍCIOS</a>
-              <a
-                href="https://discord.gg/sHe3uSR57b"
-                target="_blank"
-                rel="noreferrer"
-              >
-                DISCORD
-              </a>
-            </div>
-
-            <div className="copyright">
-              © {new Date().getFullYear()} DIDDY STORE
-            </div>
           </div>
-        </footer>
-      </main>
-
-      <style jsx>{`
-        .store {
-          min-height: 100vh;
-          overflow: hidden;
-          position: relative;
-          background:
-            radial-gradient(
-              circle at 75% 10%,
-              rgba(124, 58, 237, 0.13),
-              transparent 28%
-            ),
-            radial-gradient(
-              circle at 15% 45%,
-              rgba(59, 130, 246, 0.07),
-              transparent 25%
-            ),
-            #030305;
-        }
-
-        .noise {
-          position: fixed;
-          inset: 0;
-          pointer-events: none;
-          z-index: 100;
-          opacity: 0.025;
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
-        }
-
-        .grid {
-          position: absolute;
-          inset: 0;
-          height: 1100px;
-          pointer-events: none;
-          opacity: 0.035;
-          background-image:
-            linear-gradient(
-              rgba(255, 255, 255, 0.5) 1px,
-              transparent 1px
-            ),
-            linear-gradient(
-              90deg,
-              rgba(255, 255, 255, 0.5) 1px,
-              transparent 1px
-            );
-          background-size: 55px 55px;
-          mask-image: linear-gradient(
-            to bottom,
-            black 0%,
-            transparent 90%
-          );
-        }
-
-        .ambient {
-          position: absolute;
-          border-radius: 50%;
-          pointer-events: none;
-          filter: blur(100px);
-          animation: float 9s ease-in-out infinite;
-        }
-
-        .ambient-one {
-          width: 400px;
-          height: 400px;
-          right: -180px;
-          top: 120px;
-          background: rgba(124, 58, 237, 0.1);
-        }
-
-        .ambient-two {
-          width: 280px;
-          height: 280px;
-          left: -150px;
-          top: 550px;
-          background: rgba(37, 99, 235, 0.08);
-          animation-delay: -3s;
-        }
-
-        .ambient-three {
-          width: 250px;
-          height: 250px;
-          right: 15%;
-          top: 750px;
-          background: rgba(168, 85, 247, 0.05);
-          animation-delay: -6s;
-        }
-
-        @keyframes float {
-          0%,
-          100% {
-            transform: translate3d(0, 0, 0);
-          }
-
-          50% {
-            transform: translate3d(0, -25px, 0);
-          }
-        }
-
-        /* NAVBAR */
-
-        .navbar {
-          position: sticky;
-          top: 0;
-          z-index: 50;
-          height: 76px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-          background: rgba(3, 3, 5, 0.72);
-          backdrop-filter: blur(24px);
-        }
-
-        .nav-container {
-          width: min(1180px, calc(100% - 40px));
-          height: 100%;
-          margin: auto;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-
-        .brand {
-          display: flex;
-          align-items: center;
-          gap: 11px;
-        }
-
-        .brand-mark {
-          width: 40px;
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 12px;
-          border: 1px solid rgba(139, 92, 246, 0.35);
-          background: linear-gradient(
-            145deg,
-            rgba(139, 92, 246, 0.18),
-            rgba(255, 255, 255, 0.02)
-          );
-          box-shadow:
-            0 0 25px rgba(124, 58, 237, 0.15),
-            inset 0 1px rgba(255, 255, 255, 0.12);
-        }
-
-        .brand-mark span {
-          font-size: 18px;
-        }
-
-        .brand-text strong {
-          display: block;
-          font-size: 15px;
-          line-height: 1;
-          font-weight: 950;
-          letter-spacing: -0.5px;
-        }
-
-        .brand-text em {
-          color: #a78bfa;
-          font-style: normal;
-        }
-
-        .brand-text small {
-          display: block;
-          margin-top: 4px;
-          color: rgba(255, 255, 255, 0.24);
-          font-size: 7px;
-          font-weight: 900;
-          letter-spacing: 2px;
-        }
-
-        .nav-links {
-          display: flex;
-          align-items: center;
-          gap: 35px;
-        }
-
-        .nav-links a {
-          position: relative;
-          color: rgba(255, 255, 255, 0.3);
-          font-size: 8px;
-          font-weight: 950;
-          letter-spacing: 1.4px;
-          transition: 0.2s ease;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-          color: #fff;
-        }
-
-        .nav-links a.active::after {
-          content: "";
-          position: absolute;
-          left: 50%;
-          bottom: -10px;
-          width: 4px;
-          height: 4px;
-          transform: translateX(-50%);
-          border-radius: 50%;
-          background: #8b5cf6;
-          box-shadow: 0 0 12px #8b5cf6;
-        }
-
-        .discord-button {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 10px 14px;
-          border: 1px solid rgba(139, 92, 246, 0.2);
-          border-radius: 10px;
-          background: rgba(139, 92, 246, 0.07);
-          color: #c4b5fd;
-          font-size: 8px;
-          font-weight: 950;
-          letter-spacing: 0.7px;
-          transition: 0.25s ease;
-        }
-
-        .discord-button:hover {
-          transform: translateY(-2px);
-          border-color: rgba(139, 92, 246, 0.5);
-          background: rgba(139, 92, 246, 0.13);
-        }
-
-        /* HERO */
-
-        .hero {
-          position: relative;
-          min-height: 700px;
-          display: flex;
-          align-items: center;
-        }
-
-        .hero-container {
-          position: relative;
-          z-index: 5;
-          width: min(1180px, calc(100% - 40px));
-          margin: auto;
-          padding: 90px 0 110px;
-          display: grid;
-          grid-template-columns: 1fr 0.85fr;
-          align-items: center;
-          gap: 50px;
-        }
-
-        .live-pill {
-          width: fit-content;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding: 8px 11px;
-          border: 1px solid rgba(139, 92, 246, 0.18);
-          border-radius: 100px;
-          background: rgba(139, 92, 246, 0.055);
-          color: #a78bfa;
-          font-size: 7px;
-          font-weight: 950;
-          letter-spacing: 1.2px;
-          animation: appear 0.8s ease both;
-        }
-
-        .live-dot {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: #4ade80;
-          box-shadow: 0 0 12px #4ade80;
-          animation: pulse 1.8s infinite;
-        }
-
-        .live-pill i {
-          width: 1px;
-          height: 10px;
-          background: rgba(255, 255, 255, 0.12);
-          margin: 0 2px;
-        }
-
-        @keyframes pulse {
-          0%,
-          100% {
-            opacity: 1;
-          }
-
-          50% {
-            opacity: 0.35;
-          }
-        }
-
-        @keyframes appear {
-          from {
-            opacity: 0;
-            transform: translateY(15px);
-          }
-
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .hero h1 {
-          margin: 22px 0 0;
-          font-size: clamp(60px, 8vw, 105px);
-          line-height: 0.82;
-          letter-spacing: -7px;
-          font-weight: 1000;
-          animation: appear 0.8s 0.1s ease both;
-        }
-
-        .hero h1 span {
-          background: linear-gradient(
-            100deg,
-            #fff 0%,
-            #c4b5fd 35%,
-            #8b5cf6 75%,
-            #60a5fa 100%
-          );
-          -webkit-background-clip: text;
-          background-clip: text;
-          color: transparent;
-        }
-
-        .hero-description {
-          margin: 27px 0 0;
-          color: rgba(255, 255, 255, 0.35);
-          font-size: 12px;
-          line-height: 1.8;
-          animation: appear 0.8s 0.2s ease both;
-        }
-
-        .hero-actions {
-          display: flex;
-          gap: 10px;
-          margin-top: 29px;
-          animation: appear 0.8s 0.3s ease both;
-        }
-
-        .primary-action,
-        .secondary-action {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 15px;
-          min-width: 145px;
-          height: 45px;
-          border-radius: 10px;
-          font-size: 8px;
-          font-weight: 950;
-          letter-spacing: 1px;
-          transition: 0.25s ease;
-        }
-
-        .primary-action {
-          border: 1px solid rgba(139, 92, 246, 0.4);
-          background: linear-gradient(
-            135deg,
-            #8b5cf6,
-            #6d28d9
-          );
-          box-shadow: 0 12px 35px rgba(124, 58, 237, 0.2);
-        }
-
-        .primary-action:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 18px 45px rgba(124, 58, 237, 0.32);
-        }
-
-        .primary-action span {
-          font-size: 14px;
-        }
-
-        .secondary-action {
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          background: rgba(255, 255, 255, 0.025);
-          color: rgba(255, 255, 255, 0.45);
-        }
-
-        .secondary-action:hover {
-          color: white;
-          border-color: rgba(255, 255, 255, 0.16);
-        }
-
-        .hero-stats {
-          display: flex;
-          align-items: center;
-          gap: 22px;
-          margin-top: 42px;
-          animation: appear 0.8s 0.4s ease both;
-        }
-
-        .hero-stats div {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-        }
-
-        .hero-stats strong {
-          font-size: 19px;
-          font-weight: 950;
-        }
-
-        .hero-stats span {
-          color: rgba(255, 255, 255, 0.2);
-          font-size: 6px;
-          font-weight: 900;
-          letter-spacing: 1.5px;
-        }
-
-        .hero-stats i {
-          width: 1px;
-          height: 27px;
-          background: rgba(255, 255, 255, 0.08);
-        }
-
-        /* HERO VISUAL */
-
-        .hero-visual {
-          position: relative;
-          height: 430px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          animation: visualAppear 1s 0.15s ease both;
-        }
-
-        @keyframes visualAppear {
-          from {
-            opacity: 0;
-            transform: scale(0.92);
-          }
-
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        .visual-ring {
-          position: absolute;
-          border: 1px solid rgba(139, 92, 246, 0.08);
-          border-radius: 50%;
-          animation: spin 18s linear infinite;
-        }
-
-        .ring-one {
-          width: 410px;
-          height: 410px;
-        }
-
-        .ring-two {
-          width: 330px;
-          height: 330px;
-          border-style: dashed;
-          animation-duration: 25s;
-          animation-direction: reverse;
-        }
-
-        .ring-three {
-          width: 250px;
-          height: 250px;
-          border-color: rgba(139, 92, 246, 0.12);
-          animation-duration: 12s;
-        }
-
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
-        }
-
-        .performance-card {
-          position: relative;
-          z-index: 3;
-          width: 350px;
-          min-height: 230px;
-          padding: 24px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 23px;
-          background:
-            linear-gradient(
-              145deg,
-              rgba(255, 255, 255, 0.07),
-              rgba(255, 255, 255, 0.018)
-            ),
-            rgba(5, 5, 9, 0.75);
-          backdrop-filter: blur(25px);
-          box-shadow:
-            0 30px 100px rgba(0, 0, 0, 0.45),
-            0 0 80px rgba(124, 58, 237, 0.1),
-            inset 0 1px rgba(255, 255, 255, 0.12);
-          transform: perspective(900px) rotateY(-8deg) rotateX(4deg);
-        }
-
-        .performance-top {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-
-        .mini-label {
-          color: #a78bfa;
-          font-size: 7px;
-          font-weight: 950;
-          letter-spacing: 1.5px;
-        }
-
-        .performance-top h3 {
-          margin: 5px 0 0;
-          font-size: 22px;
-          font-weight: 950;
-          letter-spacing: -1px;
-        }
-
-        .power-icon {
-          width: 45px;
-          height: 45px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 13px;
-          border: 1px solid rgba(139, 92, 246, 0.25);
-          background: rgba(139, 92, 246, 0.1);
-          box-shadow: 0 0 30px rgba(139, 92, 246, 0.15);
-        }
-
-        .fake-graph {
-          position: relative;
-          height: 105px;
-          margin-top: 20px;
-          overflow: hidden;
-          border-radius: 10px;
-          background:
-            linear-gradient(
-              rgba(255, 255, 255, 0.035) 1px,
-              transparent 1px
-            ),
-            linear-gradient(
-              90deg,
-              rgba(255, 255, 255, 0.035) 1px,
-              transparent 1px
-            );
-          background-size: 30px 30px;
-        }
-
-        .graph-fill {
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          height: 75%;
-          opacity: 0.18;
-          background: linear-gradient(
-            to top,
-            rgba(139, 92, 246, 0.5),
-            transparent
-          );
-          clip-path: polygon(
-            0 100%,
-            0 75%,
-            10% 68%,
-            20% 72%,
-            30% 45%,
-            40% 57%,
-            50% 30%,
-            60% 42%,
-            70% 22%,
-            80% 30%,
-            90% 8%,
-            100% 15%,
-            100% 100%
-          );
-        }
-
-        .graph-line {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          align-items: center;
-          justify-content: space-around;
-        }
-
-        .graph-line span {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: #a78bfa;
-          box-shadow: 0 0 10px #8b5cf6;
-          transform: translateY(
-            calc(var(--i, 0) * 1px)
-          );
-        }
-
-        .graph-line span:nth-child(1) {
-          transform: translateY(25px);
-        }
-
-        .graph-line span:nth-child(2) {
-          transform: translateY(18px);
-        }
-
-        .graph-line span:nth-child(3) {
-          transform: translateY(25px);
-        }
-
-        .graph-line span:nth-child(4) {
-          transform: translateY(4px);
-        }
-
-        .graph-line span:nth-child(5) {
-          transform: translateY(13px);
-        }
-
-        .graph-line span:nth-child(6) {
-          transform: translateY(-8px);
-        }
-
-        .graph-line span:nth-child(7) {
-          transform: translateY(0px);
-        }
-
-        .graph-line span:nth-child(8) {
-          transform: translateY(-15px);
-        }
-
-        .graph-line span:nth-child(9) {
-          transform: translateY(-5px);
-        }
-
-        .graph-line span:nth-child(10) {
-          transform: translateY(-24px);
-        }
-
-        .graph-bottom {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 15px;
-        }
-
-        .graph-bottom div {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-        }
-
-        .graph-bottom span {
-          color: rgba(255, 255, 255, 0.2);
-          font-size: 6px;
-          font-weight: 900;
-          letter-spacing: 1px;
-        }
-
-        .graph-bottom strong {
-          color: #c4b5fd;
-          font-size: 8px;
-        }
-
-        .floating-card {
-          position: absolute;
-          z-index: 5;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 11px 14px;
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          border-radius: 12px;
-          background: rgba(8, 8, 12, 0.8);
-          backdrop-filter: blur(18px);
-          box-shadow: 0 15px 50px rgba(0, 0, 0, 0.35);
-          animation: cardFloat 5s ease-in-out infinite;
-        }
-
-        .card-top {
-          top: 38px;
-          right: 8px;
-        }
-
-        .card-bottom {
-          bottom: 45px;
-          left: 0;
-          animation-delay: -2s;
-        }
-
-        @keyframes cardFloat {
-          0%,
-          100% {
-            transform: translateY(0);
-          }
-
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-
-        .card-icon,
-        .status-check {
-          width: 29px;
-          height: 29px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 8px;
-          background: rgba(139, 92, 246, 0.1);
-          color: #a78bfa;
-          font-size: 12px;
-        }
-
-        .status-check {
-          background: rgba(74, 222, 128, 0.08);
-          color: #4ade80;
-        }
-
-        .floating-card small,
-        .floating-card strong {
-          display: block;
-        }
-
-        .floating-card small {
-          color: rgba(255, 255, 255, 0.2);
-          font-size: 5px;
-          font-weight: 900;
-          letter-spacing: 1px;
-        }
-
-        .floating-card strong {
-          margin-top: 3px;
-          font-size: 8px;
-          letter-spacing: 0.5px;
-        }
-
-        .scroll-indicator {
-          position: absolute;
-          bottom: 30px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 10px;
-          color: rgba(255, 255, 255, 0.18);
-          font-size: 6px;
-          font-weight: 900;
-          letter-spacing: 1.5px;
-        }
-
-        .scroll-indicator div {
-          width: 1px;
-          height: 25px;
-          background: linear-gradient(
-            to bottom,
-            rgba(139, 92, 246, 0.6),
-            transparent
-          );
-        }
-
-        /* COMMON */
-
-        .section-container {
-          width: min(1180px, calc(100% - 40px));
-          margin: auto;
-        }
-
-        .section-kicker {
-          color: #8b5cf6;
-          font-size: 7px;
-          font-weight: 950;
-          letter-spacing: 2px;
-        }
-
-        /* BENEFITS */
-
-        .benefits {
-          position: relative;
-          padding: 110px 0;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .section-heading {
-          display: grid;
-          grid-template-columns: 1fr 0.7fr;
-          gap: 50px;
-          align-items: end;
-        }
-
-        .section-heading h2,
-        .products-heading h2,
-        .cta h2 {
-          margin: 12px 0 0;
-          font-size: clamp(40px, 5vw, 65px);
-          line-height: 0.88;
-          letter-spacing: -4px;
-          font-weight: 1000;
-        }
-
-        .section-heading h2 span,
-        .products-heading h2 span,
-        .cta h2 span {
-          color: #8b5cf6;
-        }
-
-        .section-heading > p {
-          max-width: 390px;
-          justify-self: end;
-          margin: 0;
-          color: rgba(255, 255, 255, 0.28);
-          font-size: 10px;
-          line-height: 1.8;
-        }
-
-        .benefit-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 10px;
-          margin-top: 50px;
-        }
-
-        .benefit-card {
-          position: relative;
-          min-height: 245px;
-          padding: 23px;
-          overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          border-radius: 18px;
-          background: rgba(255, 255, 255, 0.018);
-          transition: 0.3s ease;
-        }
-
-        .benefit-card:hover {
-          transform: translateY(-6px);
-          border-color: rgba(139, 92, 246, 0.25);
-          background: rgba(139, 92, 246, 0.035);
-        }
-
-        .benefit-number {
-          position: absolute;
-          right: 18px;
-          top: 18px;
-          color: rgba(255, 255, 255, 0.08);
-          font-size: 9px;
-          font-weight: 950;
-        }
-
-        .benefit-icon {
-          width: 44px;
-          height: 44px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-top: 20px;
-          border: 1px solid rgba(139, 92, 246, 0.15);
-          border-radius: 12px;
-          background: rgba(139, 92, 246, 0.06);
-          font-size: 18px;
-        }
-
-        .benefit-card h3 {
-          margin: 25px 0 0;
-          font-size: 10px;
-          font-weight: 950;
-          letter-spacing: 0.5px;
-        }
-
-        .benefit-card p {
-          margin: 10px 0 0;
-          color: rgba(255, 255, 255, 0.24);
-          font-size: 9px;
-          line-height: 1.7;
-        }
-
-        /* PRODUCTS */
-
-        .products-section {
-          position: relative;
-          padding: 110px 0 120px;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .products-heading {
-          display: flex;
-          justify-content: space-between;
-          align-items: end;
-        }
-
-        .product-counter {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          gap: 5px;
-        }
-
-        .product-counter strong {
-          font-size: 28px;
-          font-weight: 950;
-        }
-
-        .product-counter span {
-          color: rgba(255, 255, 255, 0.2);
-          font-size: 6px;
-          font-weight: 900;
-          letter-spacing: 1.3px;
-        }
-
-        .filters {
-          display: flex;
-          gap: 7px;
-          margin-top: 45px;
-          padding-bottom: 18px;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .filters button {
-          padding: 9px 13px;
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          border-radius: 8px;
-          background: rgba(255, 255, 255, 0.02);
-          color: rgba(255, 255, 255, 0.25);
-          font-size: 7px;
-          font-weight: 950;
-          letter-spacing: 1px;
-          cursor: pointer;
-          transition: 0.2s ease;
-        }
-
-        .filters button:hover {
-          color: white;
-          border-color: rgba(139, 92, 246, 0.2);
-        }
-
-        .filters button.selected {
-          border-color: rgba(139, 92, 246, 0.35);
-          background: rgba(139, 92, 246, 0.12);
-          color: #c4b5fd;
-        }
-
-        .products-grid {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 12px;
-          margin-top: 25px;
-        }
-
-        .product-card {
-          position: relative;
-          min-height: 410px;
-          padding: 25px;
-          overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.065);
-          border-radius: 20px;
-          background:
-            linear-gradient(
-              145deg,
-              rgba(255, 255, 255, 0.035),
-              rgba(255, 255, 255, 0.012)
-            ),
-            rgba(5, 5, 8, 0.7);
-          backdrop-filter: blur(15px);
-          transition:
-            transform 0.35s ease,
-            border-color 0.35s ease,
-            box-shadow 0.35s ease;
-        }
-
-        .product-card:hover {
-          transform: translateY(-7px);
-          border-color: rgba(139, 92, 246, 0.28);
-          box-shadow:
-            0 25px 70px rgba(0, 0, 0, 0.35),
-            0 0 60px rgba(124, 58, 237, 0.07);
-        }
-
-        .product-card.featured {
-          border-color: rgba(139, 92, 246, 0.16);
-        }
-
-        .card-glow {
-          position: absolute;
-          width: 230px;
-          height: 230px;
-          right: -120px;
-          top: -120px;
-          border-radius: 50%;
-          background: rgba(139, 92, 246, 0.08);
-          filter: blur(65px);
-          transition: 0.4s ease;
-        }
-
-        .product-card:hover .card-glow {
-          transform: scale(1.35);
-          opacity: 1.4;
-        }
-
-        .product-card.blue .card-glow {
-          background: rgba(59, 130, 246, 0.08);
-        }
-
-        .product-card.cyan .card-glow {
-          background: rgba(6, 182, 212, 0.07);
-        }
-
-        .product-card.green .card-glow {
-          background: rgba(34, 197, 94, 0.06);
-        }
-
-        .product-card.orange .card-glow {
-          background: rgba(249, 115, 22, 0.07);
-        }
-
-        .product-card.pink .card-glow {
-          background: rgba(236, 72, 153, 0.07);
-        }
-
-        .product-badge {
-          position: absolute;
-          top: 19px;
-          right: 19px;
-          padding: 7px 9px;
-          border: 1px solid rgba(139, 92, 246, 0.2);
-          border-radius: 7px;
-          background: rgba(139, 92, 246, 0.08);
-          color: #c4b5fd;
-          font-size: 6px;
-          font-weight: 950;
-          letter-spacing: 0.8px;
-        }
-
-        .product-head {
-          position: relative;
-          z-index: 2;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-
-        .product-symbol {
-          width: 56px;
-          height: 56px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border: 1px solid rgba(139, 92, 246, 0.18);
-          border-radius: 16px;
-          background: linear-gradient(
-            145deg,
-            rgba(139, 92, 246, 0.13),
-            rgba(255, 255, 255, 0.02)
-          );
-          font-size: 23px;
-          box-shadow: inset 0 1px rgba(255, 255, 255, 0.1);
-        }
-
-        .product-code {
-          color: rgba(255, 255, 255, 0.12);
-          font-size: 6px;
-          font-weight: 950;
-          letter-spacing: 1.5px;
-        }
-
-        .product-content {
-          position: relative;
-          z-index: 2;
-          margin-top: 25px;
-        }
-
-        .product-type {
-          color: #8b5cf6;
-          font-size: 6px;
-          font-weight: 950;
-          letter-spacing: 1.8px;
-        }
-
-        .product-card.blue .product-type {
-          color: #60a5fa;
-        }
-
-        .product-card.cyan .product-type {
-          color: #67e8f9;
-        }
-
-        .product-card.green .product-type {
-          color: #86efac;
-        }
-
-        .product-card.orange .product-type {
-          color: #fdba74;
-        }
-
-        .product-card.pink .product-type {
-          color: #f9a8d4;
-        }
-
-        .product-content h3 {
-          margin: 7px 0 0;
-          font-size: 27px;
-          font-weight: 1000;
-          letter-spacing: -1.3px;
-        }
-
-        .product-content p {
-          max-width: 400px;
-          min-height: 43px;
-          margin: 8px 0 0;
-          color: rgba(255, 255, 255, 0.28);
-          font-size: 9px;
-          line-height: 1.65;
-        }
-
-        .product-features {
-          position: relative;
-          z-index: 2;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 8px;
-          margin-top: 23px;
-        }
-
-        .product-features div {
-          display: flex;
-          align-items: center;
-          gap: 7px;
-          color: rgba(255, 255, 255, 0.3);
-          font-size: 7px;
-          font-weight: 750;
-        }
-
-        .product-features span {
-          width: 17px;
-          height: 17px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          border-radius: 5px;
-          background: rgba(74, 222, 128, 0.06);
-          color: #4ade80;
-          font-size: 7px;
-        }
-
-        .product-footer {
-          position: absolute;
-          z-index: 3;
-          left: 25px;
-          right: 25px;
-          bottom: 25px;
-          display: flex;
-          align-items: end;
-          justify-content: space-between;
-          padding-top: 17px;
-          border-top: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .price-area > span {
-          color: rgba(255, 255, 255, 0.18);
-          font-size: 6px;
-          font-weight: 900;
-          letter-spacing: 1px;
-        }
-
-        .price-area > div {
-          display: flex;
-          align-items: baseline;
-          margin-top: 3px;
-        }
-
-        .price-area small {
-          margin-right: 3px;
-          color: rgba(255, 255, 255, 0.35);
-          font-size: 9px;
-          font-weight: 900;
-        }
-
-        .price-area strong {
-          font-size: 27px;
-          font-weight: 1000;
-          letter-spacing: -1px;
-        }
-
-        .price-area del {
-          display: block;
-          margin-top: 1px;
-          color: rgba(255, 255, 255, 0.14);
-          font-size: 7px;
-        }
-
-        .buy-button {
-          display: flex;
-          align-items: center;
-          gap: 15px;
-          padding: 13px 16px;
-          border: 1px solid rgba(139, 92, 246, 0.28);
-          border-radius: 10px;
-          background: rgba(139, 92, 246, 0.1);
-          color: #c4b5fd;
-          font-size: 7px;
-          font-weight: 950;
-          letter-spacing: 1px;
-          transition: 0.25s ease;
-        }
-
-        .buy-button span {
-          font-size: 14px;
-          transition: 0.25s ease;
-        }
-
-        .buy-button:hover {
-          transform: translateY(-2px);
-          background: linear-gradient(
-            135deg,
-            #8b5cf6,
-            #6d28d9
-          );
-          color: white;
-          box-shadow: 0 12px 30px rgba(124, 58, 237, 0.25);
-        }
-
-        .buy-button:hover span {
-          transform: translateX(3px);
-        }
-
-        /* CTA */
-
-        .cta {
-          position: relative;
-          padding: 120px 20px;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .cta-container {
-          position: relative;
-          max-width: 900px;
-          margin: auto;
-          padding: 80px 30px;
-          overflow: hidden;
-          text-align: center;
-          border: 1px solid rgba(139, 92, 246, 0.15);
-          border-radius: 30px;
-          background:
-            radial-gradient(
-              circle at 50% 0%,
-              rgba(139, 92, 246, 0.13),
-              transparent 55%
-            ),
-            rgba(255, 255, 255, 0.018);
-        }
-
-        .cta-glow {
-          position: absolute;
-          width: 300px;
-          height: 300px;
-          left: 50%;
-          top: -250px;
-          transform: translateX(-50%);
-          border-radius: 50%;
-          background: rgba(139, 92, 246, 0.18);
-          filter: blur(80px);
-        }
-
-        .cta h2 {
-          position: relative;
-          margin-top: 15px;
-        }
-
-        .cta p {
-          position: relative;
-          margin: 20px auto 0;
-          max-width: 430px;
-          color: rgba(255, 255, 255, 0.3);
-          font-size: 10px;
-          line-height: 1.7;
-        }
-
-        .cta-button {
-          position: relative;
-          display: inline-flex;
-          align-items: center;
-          gap: 25px;
-          margin-top: 28px;
-          padding: 14px 20px;
-          border-radius: 10px;
-          background: linear-gradient(
-            135deg,
-            #8b5cf6,
-            #6d28d9
-          );
-          font-size: 8px;
-          font-weight: 950;
-          letter-spacing: 1px;
-          box-shadow: 0 15px 45px rgba(124, 58, 237, 0.25);
-          transition: 0.25s ease;
-        }
-
-        .cta-button:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 20px 60px rgba(124, 58, 237, 0.35);
-        }
-
-        .cta-button span {
-          font-size: 14px;
-        }
-
-        /* FOOTER */
-
-        footer {
-          position: relative;
-          padding: 30px 0;
-        }
-
-        .footer-container {
-          width: min(1180px, calc(100% - 40px));
-          margin: auto;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-        }
-
-        .footer-logo {
-          font-size: 12px;
-          font-weight: 950;
-        }
-
-        .footer-logo span {
-          margin-right: 6px;
-        }
-
-        .footer-logo em {
-          color: #8b5cf6;
-          font-style: normal;
-        }
-
-        .footer-brand p {
-          margin: 5px 0 0;
-          color: rgba(255, 255, 255, 0.15);
-          font-size: 6px;
-          font-weight: 900;
-          letter-spacing: 1.2px;
-        }
-
-        .footer-links {
-          display: flex;
-          gap: 25px;
-        }
-
-        .footer-links a {
-          color: rgba(255, 255, 255, 0.2);
-          font-size: 7px;
-          font-weight: 900;
-          letter-spacing: 0.8px;
-          transition: 0.2s;
-        }
-
-        .footer-links a:hover {
-          color: #a78bfa;
-        }
-
-        .copyright {
-          color: rgba(255, 255, 255, 0.13);
-          font-size: 6px;
-          font-weight: 900;
-        }
-
-        /* RESPONSIVE */
-
-        @media (max-width: 900px) {
-          .nav-links {
-            display: none;
-          }
-
-          .hero-container {
-            grid-template-columns: 1fr;
-            padding-top: 70px;
-          }
-
-          .hero-visual {
-            margin-top: 10px;
-          }
-
-          .section-heading {
-            grid-template-columns: 1fr;
-          }
-
-          .section-heading > p {
-            justify-self: start;
-          }
-
-          .benefit-grid {
-            grid-template-columns: 1fr 1fr;
-          }
-        }
-
-        @media (max-width: 700px) {
-          .nav-container,
-          .section-container,
-          .footer-container,
-          .hero-container {
-            width: calc(100% - 28px);
-          }
-
-          .discord-button {
-            display: none;
-          }
-
-          .hero {
-            min-height: auto;
-          }
-
-          .hero-container {
-            padding: 65px 0 100px;
-          }
-
-          .hero h1 {
-            font-size: 65px;
-            letter-spacing: -4px;
-          }
-
-          .hero-visual {
-            height: 350px;
-            transform: scale(0.9);
-          }
-
-          .performance-card {
-            width: 300px;
-          }
-
-          .ring-one {
-            width: 350px;
-            height: 350px;
-          }
-
-          .ring-two {
-            width: 290px;
-            height: 290px;
-          }
-
-          .ring-three {
-            width: 220px;
-            height: 220px;
-          }
-
-          .benefits,
-          .products-section {
-            padding: 80px 0;
-          }
-
-          .benefit-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .products-heading {
-            align-items: start;
-            flex-direction: column;
-            gap: 25px;
-          }
-
-          .product-counter {
-            align-items: start;
-          }
-
-          .products-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .product-card {
-            min-height: 410px;
-          }
-
-          .footer-container {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 22px;
-          }
-
-          .footer-links {
-            flex-wrap: wrap;
-          }
-
-          .copyright {
-            margin-top: 5px;
-          }
-        }
-
-        @media (max-width: 430px) {
-          .hero h1 {
-            font-size: 54px;
-          }
-
-          .hero-actions {
-            flex-direction: column;
-          }
-
-          .primary-action,
-          .secondary-action {
-            width: 100%;
-          }
-
-          .hero-stats {
-            gap: 14px;
-          }
-
-          .hero-stats i {
-            height: 22px;
-          }
-
-          .hero-visual {
-            transform: scale(0.75);
-            margin-left: -35px;
-            margin-right: -35px;
-          }
-
-          .filters {
-            overflow-x: auto;
-            scrollbar-width: none;
-          }
-
-          .filters::-webkit-scrollbar {
-            display: none;
-          }
-
-          .product-features {
-            grid-template-columns: 1fr;
-          }
-
-          .product-content h3 {
-            font-size: 24px;
-          }
-
-          .product-footer {
-            left: 20px;
-            right: 20px;
-          }
-
-          .product-card {
-            padding: 20px;
-          }
-
-          .cta {
-            padding: 80px 14px;
-          }
-
-          .cta-container {
-            padding: 65px 20px;
-          }
-
-          .section-heading h2,
-          .products-heading h2,
-          .cta h2 {
-            font-size: 45px;
-            letter-spacing: -3px;
-          }
-        }
-      `}</style>
-    </>
+
+        </div>
+
+      </section>
+
+      {/* HOW IT WORKS */}
+
+      <section className="border-y border-white/5 bg-white/[0.015] px-5 py-24 sm:px-6 sm:py-32">
+
+        <div className="mx-auto max-w-7xl">
+
+          <div className="text-center">
+
+            <p className="text-[10px] font-black tracking-[.3em] text-purple-400">
+              PROCESSO DE COMPRA
+            </p>
+
+            <h2 className="mt-4 text-4xl font-black sm:text-5xl">
+              DO PRODUTO À
+              <span className="text-purple-500"> ENTREGA.</span>
+            </h2>
+
+          </div>
+
+          <div className="mt-14 grid gap-4 md:grid-cols-4">
+
+            {[
+              ["01", "ESCOLHA", "Selecione seu pack."],
+              ["02", "CHECKOUT", "Informe os dados necessários."],
+              ["03", "PIX", "Realize o pagamento."],
+              ["04", "ENTREGA", "Acompanhe a confirmação."],
+            ].map(([number, title, text]) => (
+
+              <div
+                key={number}
+                className="rounded-3xl border border-white/5 bg-[#08050d] p-7 transition hover:-translate-y-1 hover:border-purple-500/20"
+              >
+
+                <span className="text-5xl font-black text-purple-500/20">
+                  {number}
+                </span>
+
+                <h3 className="mt-6 font-black">
+                  {title}
+                </h3>
+
+                <p className="mt-3 text-sm leading-6 text-zinc-600">
+                  {text}
+                </p>
+
+              </div>
+
+            ))}
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* FINAL CTA */}
+
+      <section className="px-5 py-28 sm:px-6 sm:py-36">
+
+        <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[40px] border border-purple-500/20 bg-gradient-to-br from-purple-950/50 via-[#0b0611] to-black p-10 text-center sm:p-16">
+
+          <div className="absolute left-1/2 top-0 h-60 w-96 -translate-x-1/2 rounded-full bg-purple-600/20 blur-[100px]" />
+
+          <div className="relative">
+
+            <div className="text-5xl">
+              👑
+            </div>
+
+            <p className="mt-6 text-[10px] font-black tracking-[.3em] text-purple-400">
+              DIDDY STORE
+            </p>
+
+            <h2 className="mt-4 text-4xl font-black sm:text-6xl">
+              QUAL SERÁ O SEU
+              <br />
+              <span className="text-purple-500">
+                PRÓXIMO PACK?
+              </span>
+            </h2>
+
+            <p className="mx-auto mt-6 max-w-xl text-sm leading-7 text-zinc-500">
+              Explore todos os produtos e escolha a opção que
+              mais combina com seu objetivo.
+            </p>
+
+            <a
+              href="#produtos"
+              className="mt-9 inline-block rounded-2xl bg-purple-600 px-9 py-4 text-sm font-black shadow-[0_0_40px_rgba(168,85,247,.25)] transition hover:scale-105 hover:bg-purple-500"
+            >
+              ESCOLHER MEU PACK →
+            </a>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* FOOTER */}
+
+      <footer className="border-t border-white/5 px-5 py-12 sm:px-6">
+
+        <div className="mx-auto flex max-w-7xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
+
+          <div>
+
+            <div className="text-xl font-black">
+              DIDDY <span className="text-purple-500">STORE</span>
+            </div>
+
+            <p className="mt-2 text-[10px] font-black tracking-[.2em] text-zinc-700">
+              MAIS FPS • MENOS INPUT LAG
+            </p>
+
+          </div>
+
+          <div className="flex flex-wrap gap-6 text-xs font-black text-zinc-600">
+
+            <Link href="/">
+              INÍCIO
+            </Link>
+
+            <a href="#produtos">
+              PRODUTOS
+            </a>
+
+            <a href="#comparativo">
+              COMPARAR
+            </a>
+
+            <Link href="/faq">
+              FAQ
+            </Link>
+
+            <Link href="/termos">
+              TERMOS
+            </Link>
+
+          </div>
+
+          <a
+            href="https://discord.gg/sHe3uSR57b"
+            target="_blank"
+            rel="noreferrer"
+            className="rounded-xl bg-purple-600 px-5 py-3 text-xs font-black transition hover:bg-purple-500"
+          >
+            DISCORD
+          </a>
+
+        </div>
+
+        <div className="mx-auto mt-10 max-w-7xl border-t border-white/5 pt-6 text-[10px] font-bold text-zinc-800">
+          © 2026 Diddy Store. Todos os direitos reservados.
+        </div>
+
+      </footer>
+
+    </main>
   );
 }
