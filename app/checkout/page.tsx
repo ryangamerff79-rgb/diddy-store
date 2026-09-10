@@ -92,7 +92,9 @@ const products = {
 type ProductKey = keyof typeof products;
 
 export default function Checkout() {
-  const [productKey, setProductKey] = useState<ProductKey | null>(null);
+  const [productKey, setProductKey] =
+    useState<ProductKey | null>(null);
+
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -112,7 +114,7 @@ export default function Checkout() {
     setError("");
 
     if (!email.trim()) {
-      setError("Digite seu e-mail.");
+      setError("Digite seu e-mail para continuar.");
       return;
     }
 
@@ -144,7 +146,8 @@ export default function Checkout() {
 
       if (!response.ok) {
         throw new Error(
-          data?.error || "Não foi possível criar o pagamento."
+          data?.error ||
+            "Não foi possível criar o pagamento."
         );
       }
 
@@ -167,10 +170,21 @@ export default function Checkout() {
 
   if (!product) {
     return (
-      <main className="checkout-page">
+      <main className="checkout-page loading-page">
+        <div className="loading-orb" />
+
         <div className="loading-box">
           <div className="spinner" />
-          <p>Carregando checkout...</p>
+
+          <span className="loading-label">
+            DIDDY STORE
+          </span>
+
+          <h1>Carregando checkout...</h1>
+
+          <p>
+            Preparando sua experiência de compra.
+          </p>
         </div>
 
         <style jsx global>{`
@@ -182,28 +196,10 @@ export default function Checkout() {
           body {
             margin: 0;
             padding: 0;
-            background: #050208;
+            background: #030106;
           }
 
-          .checkout-page {
-            min-height: 100vh;
-            background:
-              radial-gradient(
-                circle at 20% 10%,
-                rgba(124, 58, 237, 0.2),
-                transparent 30%
-              ),
-              radial-gradient(
-                circle at 80% 80%,
-                rgba(168, 85, 247, 0.12),
-                transparent 30%
-              ),
-              #050208;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
+          body {
             font-family:
               Inter,
               ui-sans-serif,
@@ -214,28 +210,73 @@ export default function Checkout() {
               sans-serif;
           }
 
+          .checkout-page {
+            min-height: 100vh;
+            background:
+              radial-gradient(
+                circle at 50% -10%,
+                rgba(124, 58, 237, 0.22),
+                transparent 35%
+              ),
+              #030106;
+            color: white;
+          }
+
+          .loading-page {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+          }
+
+          .loading-orb {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: rgba(124, 58, 237, 0.15);
+            filter: blur(100px);
+          }
+
           .loading-box {
+            position: relative;
+            z-index: 2;
             text-align: center;
           }
 
           .spinner {
-            width: 42px;
-            height: 42px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 24px;
+            border: 3px solid rgba(255, 255, 255, 0.08);
             border-top-color: #a855f7;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
-            margin: 0 auto 18px;
+          }
+
+          .loading-label {
+            color: #a855f7;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 0.3em;
+          }
+
+          .loading-box h1 {
+            margin: 12px 0 0;
+            font-size: 30px;
+            font-weight: 900;
+          }
+
+          .loading-box p {
+            margin-top: 10px;
+            color: #71717a;
           }
 
           @keyframes spin {
             to {
               transform: rotate(360deg);
             }
-          }
-
-          .loading-box p {
-            color: #a1a1aa;
           }
         `}</style>
       </main>
@@ -244,121 +285,291 @@ export default function Checkout() {
 
   return (
     <main className="checkout-page">
+      <div className="grid-background" />
+
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
 
       <div className="checkout-container">
 
+        {/* NAVBAR */}
+
         <header className="topbar">
           <Link href="/loja" className="brand">
-            <span className="brand-icon">D</span>
-            <span>
-              DIDDY<span className="purple">STORE</span>
+            <span className="brand-mark">
+              D
+            </span>
+
+            <span className="brand-name">
+              DIDDY
+              <span>STORE</span>
             </span>
           </Link>
 
-          <div className="secure-top">
-            <span>🔒</span>
-            CHECKOUT SEGURO
+          <div className="secure-pill">
+            <span className="secure-dot" />
+            <span>CHECKOUT SEGURO</span>
           </div>
         </header>
 
-        <div className="back-area">
-          <Link href="/loja" className="back-link">
-            ← Voltar para a loja
-          </Link>
+        {/* PROGRESSO */}
+
+        <div className="progress-area">
+
+          <div className="step active">
+            <div className="step-number">1</div>
+
+            <div>
+              <strong>Produto</strong>
+              <span>Selecionado</span>
+            </div>
+          </div>
+
+          <div className="progress-line active-line" />
+
+          <div className="step active">
+            <div className="step-number">2</div>
+
+            <div>
+              <strong>Pagamento</strong>
+              <span>PIX</span>
+            </div>
+          </div>
+
+          <div className="progress-line" />
+
+          <div className="step">
+            <div className="step-number">3</div>
+
+            <div>
+              <strong>Entrega</strong>
+              <span>Automática</span>
+            </div>
+          </div>
+
         </div>
+
+        {/* VOLTAR */}
+
+        <Link href="/loja" className="back-link">
+          <span>←</span>
+          Voltar para produtos
+        </Link>
+
+        {/* TÍTULO */}
+
+        <section className="heading">
+          <span className="eyebrow">
+            FINALIZE SUA COMPRA
+          </span>
+
+          <h1>
+            Seu próximo nível
+            <span> começa aqui.</span>
+          </h1>
+
+          <p>
+            Revise seu produto, informe seu e-mail
+            e gere seu pagamento PIX.
+          </p>
+        </section>
+
+        {/* CHECKOUT */}
 
         <div className="checkout-grid">
 
           {/* PRODUTO */}
+
           <section className="product-card">
 
-            <div className="product-glow" />
+            <div className="card-top-glow" />
 
-            <div className="product-content">
+            <div className="product-inner">
+
+              <div className="product-header">
+
+                <div className="product-icon">
+                  {product.type === "GAMING"
+                    ? "🎮"
+                    : "⚡"}
+                </div>
+
+                <div>
+                  <span className="small-label">
+                    PRODUTO DIGITAL
+                  </span>
+
+                  <span className="product-category">
+                    {product.type}
+                  </span>
+                </div>
+
+              </div>
 
               <div className="badge">
                 {product.badge}
               </div>
 
-              <div className="product-type">
-                {product.type}
-              </div>
+              <h2>{product.name}</h2>
 
-              <h1>{product.name}</h1>
-
-              <p className="description">
+              <p className="product-description">
                 {product.description}
               </p>
 
-              <div className="price-area">
-                <span className="currency">R$</span>
+              <div className="price-box">
 
-                <span className="price">
-                  {product.price.toFixed(2).replace(".", ",")}
+                <span className="price-label">
+                  VALOR TOTAL
                 </span>
+
+                <div className="price">
+                  <small>R$</small>
+
+                  {product.price
+                    .toFixed(2)
+                    .replace(".", ",")}
+                </div>
+
+                <span className="digital">
+                  Produto digital
+                </span>
+
               </div>
 
-              <div className="separator" />
+              <div className="divider" />
 
-              <h2>O que está incluso</h2>
+              <div className="included-title">
+                O QUE VOCÊ RECEBE
+              </div>
 
               <div className="features">
+
                 {product.features.map((feature) => (
-                  <div className="feature" key={feature}>
-                    <span className="check">✓</span>
+                  <div
+                    className="feature"
+                    key={feature}
+                  >
+                    <span className="feature-check">
+                      ✓
+                    </span>
 
                     <span>{feature}</span>
                   </div>
                 ))}
+
+              </div>
+
+              <div className="product-note">
+                <span>✦</span>
+
+                <p>
+                  O produto é disponibilizado
+                  digitalmente após a confirmação
+                  do pagamento.
+                </p>
               </div>
 
             </div>
           </section>
 
           {/* PAGAMENTO */}
+
           <section className="payment-card">
 
-            <div className="secure-label">
-              <span>🔒</span>
-              PAGAMENTO PROTEGIDO
+            <div className="payment-header">
+
+              <div>
+                <span className="eyebrow">
+                  PAGAMENTO
+                </span>
+
+                <h2>
+                  Finalizar pedido
+                </h2>
+              </div>
+
+              <div className="lock-icon">
+                🔒
+              </div>
+
             </div>
 
-            <h2>Finalizar compra</h2>
-
             <p className="payment-description">
-              Informe seu e-mail abaixo. Ele será usado para
-              identificar seu pedido e realizar a entrega digital.
+              Informe um e-mail válido para
+              identificarmos seu pedido e
+              disponibilizarmos a entrega.
             </p>
 
-            <label htmlFor="email">
-              Seu e-mail
-            </label>
+            <div className="field">
 
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(event) => {
-                setEmail(event.target.value);
-                setError("");
-              }}
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  createPayment();
-                }
-              }}
-              placeholder="voce@email.com"
-              autoComplete="email"
-            />
+              <label htmlFor="email">
+                E-MAIL
+              </label>
 
-            {error && (
-              <div className="error">
-                <span>!</span>
-                {error}
+              <div
+                className={`input-wrapper ${
+                  error ? "input-error" : ""
+                }`}
+              >
+                <span className="input-icon">
+                  @
+                </span>
+
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+                    setError("");
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      createPayment();
+                    }
+                  }}
+                  placeholder="voce@email.com"
+                  autoComplete="email"
+                  disabled={loading}
+                />
               </div>
-            )}
+
+              {error && (
+                <div className="error-message">
+                  <span>!</span>
+                  {error}
+                </div>
+              )}
+
+            </div>
+
+            {/* MÉTODO */}
+
+            <div className="method-title">
+              MÉTODO DE PAGAMENTO
+            </div>
+
+            <div className="pix-card">
+
+              <div className="pix-logo">
+                <span>✦</span>
+              </div>
+
+              <div className="pix-info">
+                <strong>PIX</strong>
+
+                <span>
+                  Pagamento instantâneo
+                </span>
+              </div>
+
+              <div className="selected">
+                ✓
+              </div>
+
+            </div>
+
+            {/* BOTÃO */}
 
             <button
               type="button"
@@ -369,65 +580,126 @@ export default function Checkout() {
               {loading ? (
                 <>
                   <span className="button-spinner" />
-                  Criando PIX...
+
+                  <span>
+                    Criando pagamento...
+                  </span>
                 </>
               ) : (
                 <>
-                  Gerar pagamento PIX
-                  <span>→</span>
+                  <span>
+                    Gerar pagamento PIX
+                  </span>
+
+                  <span className="button-arrow">
+                    →
+                  </span>
                 </>
               )}
             </button>
 
-            <div className="payment-method">
-              <div className="pix-icon">P</div>
+            {/* GARANTIAS */}
 
-              <div>
-                <strong>PIX</strong>
-                <span>Pagamento instantâneo</span>
-              </div>
+            <div className="trust-grid">
 
-              <div className="approved">
-                ✓
-              </div>
-            </div>
-
-            <div className="trust">
-              <div>
+              <div className="trust-item">
                 <span>🔐</span>
-                Pagamento seguro
+                <strong>Seguro</strong>
+                <small>Pagamento protegido</small>
               </div>
 
-              <div>
+              <div className="trust-item">
                 <span>⚡</span>
-                Aprovação rápida
+                <strong>Rápido</strong>
+                <small>PIX instantâneo</small>
               </div>
 
-              <div>
+              <div className="trust-item">
                 <span>📦</span>
-                Entrega digital
+                <strong>Digital</strong>
+                <small>Entrega automática</small>
               </div>
+
             </div>
 
-            <p className="terms">
-              Ao continuar, você será direcionado para a
-              etapa de pagamento PIX. A liberação do produto
-              ocorre após a confirmação do pagamento.
-            </p>
+            <div className="payment-footer">
+
+              <span className="footer-lock">
+                🔒
+              </span>
+
+              <p>
+                Seus dados são utilizados apenas
+                para processar e identificar seu
+                pedido.
+              </p>
+
+            </div>
 
           </section>
 
         </div>
 
+        {/* RESUMO */}
+
+        <section className="bottom-info">
+
+          <div className="info-item">
+            <span>01</span>
+
+            <div>
+              <strong>
+                Escolha seu produto
+              </strong>
+
+              <p>
+                Você está comprando:
+                <b> {product.name}</b>
+              </p>
+            </div>
+          </div>
+
+          <div className="info-item">
+            <span>02</span>
+
+            <div>
+              <strong>
+                Pague com PIX
+              </strong>
+
+              <p>
+                Gere o QR Code na próxima etapa.
+              </p>
+            </div>
+          </div>
+
+          <div className="info-item">
+            <span>03</span>
+
+            <div>
+              <strong>
+                Receba digitalmente
+              </strong>
+
+              <p>
+                A entrega é liberada após
+                confirmação.
+              </p>
+            </div>
+          </div>
+
+        </section>
+
         <footer className="footer">
           <span>© 2026 Diddy Store</span>
-          <span>•</span>
-          <span>Pagamento seguro</span>
+          <span className="footer-separator">•</span>
+          <span>Performance • Gaming • Otimização</span>
         </footer>
 
       </div>
 
       <style jsx global>{`
+
         * {
           box-sizing: border-box;
         }
@@ -436,7 +708,7 @@ export default function Checkout() {
         body {
           margin: 0;
           padding: 0;
-          background: #050208;
+          background: #030106;
         }
 
         body {
@@ -450,47 +722,81 @@ export default function Checkout() {
             sans-serif;
         }
 
+        button,
+        input {
+          font: inherit;
+        }
+
         .checkout-page {
           min-height: 100vh;
           position: relative;
           overflow: hidden;
           background:
             radial-gradient(
-              circle at 15% 0%,
-              rgba(124, 58, 237, 0.18),
-              transparent 32%
+              circle at 50% -15%,
+              rgba(124, 58, 237, 0.20),
+              transparent 35%
             ),
             radial-gradient(
-              circle at 90% 75%,
-              rgba(168, 85, 247, 0.1),
-              transparent 28%
+              circle at 5% 55%,
+              rgba(168, 85, 247, 0.08),
+              transparent 25%
             ),
-            #050208;
+            radial-gradient(
+              circle at 95% 80%,
+              rgba(124, 58, 237, 0.07),
+              transparent 25%
+            ),
+            #030106;
           color: white;
-          padding: 30px 20px 50px;
+          padding: 0 20px 60px;
+        }
+
+        .grid-background {
+          position: fixed;
+          inset: 0;
+          pointer-events: none;
+          opacity: 0.22;
+          background-image:
+            linear-gradient(
+              rgba(255,255,255,0.025) 1px,
+              transparent 1px
+            ),
+            linear-gradient(
+              90deg,
+              rgba(255,255,255,0.025) 1px,
+              transparent 1px
+            );
+          background-size: 55px 55px;
+          mask-image:
+            linear-gradient(
+              to bottom,
+              black,
+              transparent 80%
+            );
         }
 
         .ambient {
           position: fixed;
           pointer-events: none;
           border-radius: 50%;
-          filter: blur(100px);
-          opacity: 0.25;
+          filter: blur(110px);
+          opacity: 0.18;
         }
 
         .ambient-one {
-          width: 300px;
-          height: 300px;
+          width: 380px;
+          height: 380px;
           background: #7c3aed;
-          left: -180px;
-          top: 25%;
+          left: -240px;
+          top: 35%;
         }
 
         .ambient-two {
-          width: 250px;
-          height: 250px;
-          background: #9333ea;
-          right: -130px;
+          width: 330px;
+          height: 330px;
+          background: #a855f7;
+          right: -220px;
           bottom: 10%;
         }
 
@@ -498,312 +804,724 @@ export default function Checkout() {
           position: relative;
           z-index: 2;
           width: 100%;
-          max-width: 1120px;
+          max-width: 1180px;
           margin: 0 auto;
         }
 
+        /* NAVBAR */
+
         .topbar {
-          height: 70px;
+          height: 82px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+          border-bottom: 1px solid
+            rgba(255,255,255,0.07);
         }
 
         .brand {
           display: flex;
           align-items: center;
-          gap: 11px;
+          gap: 12px;
           color: white;
           text-decoration: none;
-          font-size: 17px;
-          font-weight: 950;
-          letter-spacing: -0.04em;
         }
 
-        .brand-icon {
-          width: 34px;
-          height: 34px;
+        .brand-mark {
+          width: 38px;
+          height: 38px;
           display: grid;
           place-items: center;
-          border-radius: 10px;
-          background: linear-gradient(135deg, #7c3aed, #a855f7);
-          box-shadow: 0 8px 30px rgba(124, 58, 237, 0.3);
+          border-radius: 12px;
+          background:
+            linear-gradient(
+              135deg,
+              #7c3aed,
+              #a855f7
+            );
+          box-shadow:
+            0 10px 35px
+            rgba(124,58,237,0.3);
+          font-size: 18px;
           font-weight: 950;
         }
 
-        .purple {
+        .brand-name {
+          font-size: 18px;
+          font-weight: 950;
+          letter-spacing: -0.05em;
+        }
+
+        .brand-name span {
           color: #a855f7;
         }
 
-        .secure-top {
-          color: #71717a;
+        .secure-pill {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          padding: 10px 14px;
+          border: 1px solid
+            rgba(255,255,255,0.08);
+          border-radius: 999px;
+          background:
+            rgba(255,255,255,0.025);
+          color: #a1a1aa;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.12em;
+        }
+
+        .secure-dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: #a855f7;
+          box-shadow:
+            0 0 14px
+            rgba(168,85,247,0.9);
+        }
+
+        /* PROGRESS */
+
+        .progress-area {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          margin-top: 35px;
+        }
+
+        .step {
+          display: flex;
+          align-items: center;
+          gap: 9px;
+          color: #52525b;
+        }
+
+        .step-number {
+          width: 31px;
+          height: 31px;
+          display: grid;
+          place-items: center;
+          border: 1px solid
+            rgba(255,255,255,0.08);
+          border-radius: 50%;
           font-size: 11px;
           font-weight: 900;
-          letter-spacing: 0.1em;
         }
 
-        .secure-top span {
-          margin-right: 7px;
+        .step.active {
+          color: white;
         }
 
-        .back-area {
-          padding: 30px 0 24px;
+        .step.active .step-number {
+          border-color:
+            rgba(168,85,247,0.5);
+          background:
+            rgba(124,58,237,0.18);
+          color: #c4b5fd;
+          box-shadow:
+            0 0 25px
+            rgba(124,58,237,0.12);
         }
+
+        .step strong,
+        .step span {
+          display: block;
+        }
+
+        .step strong {
+          font-size: 11px;
+          font-weight: 900;
+        }
+
+        .step span {
+          margin-top: 2px;
+          color: #52525b;
+          font-size: 9px;
+        }
+
+        .active .step span {
+          color: #71717a;
+        }
+
+        .progress-line {
+          width: 70px;
+          height: 1px;
+          background:
+            rgba(255,255,255,0.08);
+        }
+
+        .active-line {
+          background:
+            linear-gradient(
+              90deg,
+              rgba(124,58,237,0.7),
+              rgba(168,85,247,0.15)
+            );
+        }
+
+        /* BACK */
 
         .back-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 45px;
           color: #a78bfa;
           text-decoration: none;
-          font-size: 14px;
+          font-size: 13px;
           font-weight: 800;
           transition: 0.2s;
         }
 
         .back-link:hover {
           color: white;
+          transform: translateX(-3px);
         }
+
+        /* HEADING */
+
+        .heading {
+          margin-top: 28px;
+          text-align: center;
+        }
+
+        .eyebrow {
+          color: #a855f7;
+          font-size: 10px;
+          font-weight: 950;
+          letter-spacing: 0.22em;
+        }
+
+        .heading h1 {
+          margin: 12px 0 0;
+          font-size: clamp(38px, 6vw, 62px);
+          line-height: 0.98;
+          letter-spacing: -0.065em;
+          font-weight: 950;
+        }
+
+        .heading h1 span {
+          background:
+            linear-gradient(
+              90deg,
+              #a78bfa,
+              #c084fc
+            );
+          -webkit-background-clip: text;
+          color: transparent;
+        }
+
+        .heading p {
+          max-width: 600px;
+          margin: 17px auto 0;
+          color: #71717a;
+          font-size: 14px;
+          line-height: 1.7;
+        }
+
+        /* GRID */
 
         .checkout-grid {
           display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 22px;
+          grid-template-columns:
+            minmax(0, 1fr)
+            minmax(0, 1fr);
+          gap: 20px;
+          margin-top: 40px;
         }
 
         .product-card,
         .payment-card {
           position: relative;
           overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.09);
-          border-radius: 28px;
-          background: rgba(255, 255, 255, 0.035);
+          border: 1px solid
+            rgba(255,255,255,0.08);
+          border-radius: 30px;
+          background:
+            linear-gradient(
+              145deg,
+              rgba(255,255,255,0.055),
+              rgba(255,255,255,0.018)
+            );
           box-shadow:
-            0 30px 100px rgba(0, 0, 0, 0.35),
-            inset 0 1px rgba(255, 255, 255, 0.04);
+            0 35px 100px
+            rgba(0,0,0,0.35),
+            inset 0 1px
+            rgba(255,255,255,0.04);
           backdrop-filter: blur(25px);
         }
 
         .product-card {
-          min-height: 580px;
+          min-height: 590px;
         }
 
-        .product-glow {
+        .card-top-glow {
           position: absolute;
-          width: 350px;
-          height: 350px;
-          right: -170px;
+          width: 400px;
+          height: 250px;
           top: -180px;
+          left: 30%;
           border-radius: 50%;
-          background: rgba(124, 58, 237, 0.2);
-          filter: blur(60px);
+          background:
+            rgba(124,58,237,0.22);
+          filter: blur(80px);
         }
 
-        .product-content {
+        .product-inner {
           position: relative;
-          padding: 42px;
+          padding: 38px;
+        }
+
+        .product-header {
+          display: flex;
+          align-items: center;
+          gap: 13px;
+        }
+
+        .product-icon {
+          width: 52px;
+          height: 52px;
+          display: grid;
+          place-items: center;
+          border: 1px solid
+            rgba(168,85,247,0.2);
+          border-radius: 16px;
+          background:
+            rgba(124,58,237,0.12);
+          font-size: 22px;
+          box-shadow:
+            0 15px 35px
+            rgba(124,58,237,0.1);
+        }
+
+        .small-label,
+        .product-category {
+          display: block;
+        }
+
+        .small-label {
+          color: #52525b;
+          font-size: 9px;
+          font-weight: 900;
+          letter-spacing: 0.16em;
+        }
+
+        .product-category {
+          margin-top: 4px;
+          color: #a78bfa;
+          font-size: 10px;
+          font-weight: 900;
+          letter-spacing: 0.12em;
         }
 
         .badge {
           display: inline-flex;
-          align-items: center;
-          padding: 9px 13px;
-          border: 1px solid rgba(168, 85, 247, 0.25);
+          margin-top: 30px;
+          padding: 8px 12px;
+          border: 1px solid
+            rgba(168,85,247,0.2);
           border-radius: 999px;
-          background: rgba(124, 58, 237, 0.12);
+          background:
+            rgba(124,58,237,0.1);
           color: #c4b5fd;
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 950;
-          letter-spacing: 0.06em;
+          letter-spacing: 0.04em;
         }
 
-        .product-type {
-          margin-top: 35px;
-          color: #a78bfa;
-          font-size: 11px;
-          font-weight: 950;
-          letter-spacing: 0.2em;
-        }
-
-        .product-card h1 {
-          margin: 10px 0 0;
-          font-size: clamp(42px, 5vw, 64px);
-          line-height: 0.95;
-          letter-spacing: -0.055em;
+        .product-inner h2 {
+          margin: 17px 0 0;
+          font-size: clamp(38px, 5vw, 55px);
+          line-height: 0.98;
+          letter-spacing: -0.06em;
           font-weight: 950;
         }
 
-        .description {
-          max-width: 470px;
-          margin: 23px 0 0;
+        .product-description {
+          max-width: 480px;
+          margin: 17px 0 0;
           color: #a1a1aa;
-          font-size: 15px;
+          font-size: 14px;
           line-height: 1.7;
         }
 
-        .price-area {
-          display: flex;
-          align-items: flex-start;
-          margin-top: 32px;
+        .price-box {
+          margin-top: 27px;
+          padding: 19px;
+          border: 1px solid
+            rgba(255,255,255,0.06);
+          border-radius: 18px;
+          background:
+            rgba(0,0,0,0.18);
         }
 
-        .currency {
-          margin-top: 9px;
-          margin-right: 7px;
-          color: #a78bfa;
-          font-size: 17px;
+        .price-label {
+          display: block;
+          color: #52525b;
+          font-size: 9px;
           font-weight: 900;
+          letter-spacing: 0.15em;
         }
 
         .price {
-          font-size: 53px;
+          display: flex;
+          align-items: flex-start;
+          margin-top: 6px;
+          color: white;
+          font-size: 45px;
           line-height: 1;
           letter-spacing: -0.06em;
           font-weight: 950;
         }
 
-        .separator {
-          height: 1px;
-          margin: 35px 0 30px;
-          background: rgba(255, 255, 255, 0.08);
+        .price small {
+          margin-top: 7px;
+          margin-right: 7px;
+          color: #a78bfa;
+          font-size: 14px;
+          letter-spacing: 0;
         }
 
-        .product-card h2 {
-          margin: 0;
-          font-size: 22px;
+        .digital {
+          display: block;
+          margin-top: 7px;
+          color: #52525b;
+          font-size: 10px;
+        }
+
+        .divider {
+          height: 1px;
+          margin: 27px 0;
+          background:
+            rgba(255,255,255,0.07);
+        }
+
+        .included-title,
+        .method-title {
+          color: #71717a;
+          font-size: 9px;
           font-weight: 950;
+          letter-spacing: 0.17em;
         }
 
         .features {
           display: grid;
-          gap: 15px;
-          margin-top: 22px;
+          gap: 12px;
+          margin-top: 17px;
         }
 
         .feature {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: 10px;
           color: #d4d4d8;
-          font-size: 14px;
+          font-size: 13px;
         }
 
-        .check {
-          width: 27px;
-          height: 27px;
-          flex: 0 0 27px;
+        .feature-check {
+          width: 23px;
+          height: 23px;
+          flex: 0 0 23px;
           display: grid;
           place-items: center;
+          border: 1px solid
+            rgba(168,85,247,0.2);
           border-radius: 50%;
-          background: rgba(124, 58, 237, 0.16);
+          background:
+            rgba(124,58,237,0.12);
           color: #c4b5fd;
-          font-weight: 950;
-        }
-
-        .payment-card {
-          padding: 42px;
-        }
-
-        .secure-label {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          color: #a78bfa;
           font-size: 11px;
           font-weight: 950;
-          letter-spacing: 0.14em;
+        }
+
+        .product-note {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          margin-top: 25px;
+          padding-top: 20px;
+          border-top: 1px solid
+            rgba(255,255,255,0.06);
+        }
+
+        .product-note span {
+          color: #a855f7;
+        }
+
+        .product-note p {
+          margin: 0;
+          color: #52525b;
+          font-size: 10px;
+          line-height: 1.6;
+        }
+
+        /* PAYMENT */
+
+        .payment-card {
+          padding: 38px;
+        }
+
+        .payment-header {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
         }
 
         .payment-card h2 {
-          margin: 18px 0 0;
-          font-size: 38px;
+          margin: 9px 0 0;
+          font-size: 35px;
           line-height: 1;
-          letter-spacing: -0.045em;
+          letter-spacing: -0.05em;
           font-weight: 950;
+        }
+
+        .lock-icon {
+          width: 44px;
+          height: 44px;
+          display: grid;
+          place-items: center;
+          border: 1px solid
+            rgba(255,255,255,0.07);
+          border-radius: 13px;
+          background:
+            rgba(255,255,255,0.025);
+          font-size: 17px;
         }
 
         .payment-description {
-          margin: 16px 0 30px;
-          color: #a1a1aa;
-          font-size: 14px;
+          margin: 17px 0 30px;
+          color: #71717a;
+          font-size: 13px;
           line-height: 1.7;
         }
 
-        label {
+        .field label {
           display: block;
           margin-bottom: 9px;
-          color: #e4e4e7;
-          font-size: 13px;
-          font-weight: 850;
+          color: #a1a1aa;
+          font-size: 9px;
+          font-weight: 950;
+          letter-spacing: 0.15em;
         }
 
-        input {
-          display: block;
-          width: 100%;
-          height: 54px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 14px;
-          outline: none;
-          background: rgba(0, 0, 0, 0.28);
-          color: white;
-          padding: 0 16px;
-          font-size: 14px;
+        .input-wrapper {
+          display: flex;
+          align-items: center;
+          height: 57px;
+          border: 1px solid
+            rgba(255,255,255,0.09);
+          border-radius: 15px;
+          background:
+            rgba(0,0,0,0.25);
           transition: 0.2s;
         }
 
-        input::placeholder {
-          color: #52525b;
+        .input-wrapper:focus-within {
+          border-color:
+            rgba(168,85,247,0.65);
+          box-shadow:
+            0 0 0 4px
+            rgba(124,58,237,0.09),
+            0 10px 35px
+            rgba(124,58,237,0.07);
         }
 
-        input:focus {
-          border-color: rgba(168, 85, 247, 0.75);
-          box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+        .input-wrapper.input-error {
+          border-color:
+            rgba(239,68,68,0.5);
         }
 
-        .error {
-          display: flex;
-          align-items: center;
-          gap: 9px;
-          margin-top: 12px;
-          padding: 12px 14px;
-          border: 1px solid rgba(239, 68, 68, 0.18);
-          border-radius: 12px;
-          background: rgba(239, 68, 68, 0.08);
-          color: #fca5a5;
-          font-size: 13px;
+        .input-icon {
+          width: 48px;
+          color: #71717a;
+          text-align: center;
+          font-size: 18px;
           font-weight: 700;
         }
 
-        .error span {
-          width: 21px;
-          height: 21px;
+        .input-wrapper input {
+          width: 100%;
+          height: 100%;
+          border: 0;
+          outline: 0;
+          background: transparent;
+          color: white;
+          padding-right: 16px;
+          font-size: 14px;
+        }
+
+        .input-wrapper input::placeholder {
+          color: #3f3f46;
+        }
+
+        .input-wrapper input:disabled {
+          cursor: not-allowed;
+          opacity: 0.6;
+        }
+
+        .error-message {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-top: 10px;
+          padding: 10px 12px;
+          border: 1px solid
+            rgba(239,68,68,0.15);
+          border-radius: 10px;
+          background:
+            rgba(239,68,68,0.07);
+          color: #fca5a5;
+          font-size: 11px;
+          font-weight: 700;
+        }
+
+        .error-message span {
+          width: 18px;
+          height: 18px;
           display: grid;
           place-items: center;
           border-radius: 50%;
-          background: rgba(239, 68, 68, 0.15);
+          background:
+            rgba(239,68,68,0.15);
           font-weight: 950;
         }
 
+        .method-title {
+          margin-top: 27px;
+        }
+
+        .pix-card {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-top: 10px;
+          padding: 14px;
+          border: 1px solid
+            rgba(168,85,247,0.35);
+          border-radius: 16px;
+          background:
+            linear-gradient(
+              135deg,
+              rgba(124,58,237,0.12),
+              rgba(124,58,237,0.035)
+            );
+          box-shadow:
+            inset 0 1px
+            rgba(255,255,255,0.03);
+        }
+
+        .pix-logo {
+          width: 43px;
+          height: 43px;
+          display: grid;
+          place-items: center;
+          border-radius: 12px;
+          background:
+            linear-gradient(
+              135deg,
+              #7c3aed,
+              #9333ea
+            );
+          color: white;
+          font-size: 18px;
+          box-shadow:
+            0 10px 30px
+            rgba(124,58,237,0.25);
+        }
+
+        .pix-info strong,
+        .pix-info span {
+          display: block;
+        }
+
+        .pix-info strong {
+          font-size: 13px;
+          font-weight: 950;
+        }
+
+        .pix-info span {
+          margin-top: 3px;
+          color: #71717a;
+          font-size: 10px;
+        }
+
+        .selected {
+          width: 23px;
+          height: 23px;
+          display: grid;
+          place-items: center;
+          margin-left: auto;
+          border-radius: 50%;
+          background: #7c3aed;
+          color: white;
+          font-size: 11px;
+          font-weight: 950;
+        }
+
+        /* BUTTON */
+
         .payment-button {
+          position: relative;
           width: 100%;
-          min-height: 56px;
+          min-height: 60px;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 12px;
           margin-top: 18px;
+          overflow: hidden;
           border: 0;
-          border-radius: 14px;
-          background: linear-gradient(135deg, #7c3aed, #9333ea);
+          border-radius: 16px;
+          background:
+            linear-gradient(
+              135deg,
+              #7c3aed,
+              #9333ea
+            );
           color: white;
-          font-size: 14px;
-          font-weight: 950;
           cursor: pointer;
-          box-shadow: 0 15px 40px rgba(124, 58, 237, 0.18);
-          transition: 0.2s;
+          font-size: 13px;
+          font-weight: 950;
+          box-shadow:
+            0 18px 50px
+            rgba(124,58,237,0.2);
+          transition:
+            transform 0.2s,
+            box-shadow 0.2s,
+            opacity 0.2s;
+        }
+
+        .payment-button::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(
+              110deg,
+              transparent 20%,
+              rgba(255,255,255,0.13) 50%,
+              transparent 80%
+            );
+          transform: translateX(-100%);
+          transition: transform 0.6s;
         }
 
         .payment-button:hover:not(:disabled) {
-          transform: translateY(-2px);
-          box-shadow: 0 20px 45px rgba(124, 58, 237, 0.3);
+          transform: translateY(-3px);
+          box-shadow:
+            0 24px 60px
+            rgba(124,58,237,0.32);
+        }
+
+        .payment-button:hover:not(:disabled)::before {
+          transform: translateX(100%);
+        }
+
+        .payment-button:active:not(:disabled) {
+          transform: translateY(-1px);
         }
 
         .payment-button:disabled {
@@ -811,118 +1529,160 @@ export default function Checkout() {
           opacity: 0.65;
         }
 
+        .button-arrow {
+          font-size: 20px;
+          transition: transform 0.2s;
+        }
+
+        .payment-button:hover
+          .button-arrow {
+          transform: translateX(4px);
+        }
+
         .button-spinner {
           width: 19px;
           height: 19px;
-          border: 2px solid rgba(255, 255, 255, 0.3);
+          border: 2px solid
+            rgba(255,255,255,0.3);
           border-top-color: white;
           border-radius: 50%;
           animation: spin 0.7s linear infinite;
         }
 
-        .payment-method {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-top: 20px;
-          padding: 15px;
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          border-radius: 14px;
-          background: rgba(0, 0, 0, 0.2);
-        }
+        /* TRUST */
 
-        .pix-icon {
-          width: 39px;
-          height: 39px;
+        .trust-grid {
           display: grid;
-          place-items: center;
-          border-radius: 11px;
-          background: rgba(168, 85, 247, 0.12);
-          color: #c4b5fd;
-          font-weight: 950;
+          grid-template-columns:
+            repeat(3, 1fr);
+          gap: 8px;
+          margin-top: 18px;
         }
 
-        .payment-method strong {
-          display: block;
-          font-size: 13px;
+        .trust-item {
+          padding: 13px 7px;
+          border: 1px solid
+            rgba(255,255,255,0.05);
+          border-radius: 13px;
+          background:
+            rgba(255,255,255,0.018);
+          text-align: center;
         }
 
-        .payment-method span {
+        .trust-item > span {
           display: block;
-          margin-top: 2px;
-          color: #71717a;
+          margin-bottom: 6px;
+          font-size: 15px;
+        }
+
+        .trust-item strong,
+        .trust-item small {
+          display: block;
+        }
+
+        .trust-item strong {
+          color: #d4d4d8;
+          font-size: 9px;
+          font-weight: 900;
+        }
+
+        .trust-item small {
+          margin-top: 3px;
+          color: #52525b;
+          font-size: 8px;
+        }
+
+        .payment-footer {
+          display: flex;
+          align-items: flex-start;
+          gap: 8px;
+          margin-top: 19px;
+          padding-top: 17px;
+          border-top: 1px solid
+            rgba(255,255,255,0.06);
+        }
+
+        .footer-lock {
           font-size: 11px;
         }
 
-        .approved {
-          margin-left: auto;
-          color: #a78bfa;
-          font-size: 18px;
+        .payment-footer p {
+          margin: 0;
+          color: #52525b;
+          font-size: 9px;
+          line-height: 1.6;
+        }
+
+        /* BOTTOM INFO */
+
+        .bottom-info {
+          display: grid;
+          grid-template-columns:
+            repeat(3, 1fr);
+          gap: 10px;
+          margin-top: 18px;
+        }
+
+        .info-item {
+          display: flex;
+          gap: 13px;
+          padding: 18px;
+          border: 1px solid
+            rgba(255,255,255,0.06);
+          border-radius: 18px;
+          background:
+            rgba(255,255,255,0.018);
+        }
+
+        .info-item > span {
+          color: #a855f7;
+          font-size: 10px;
           font-weight: 950;
         }
 
-        .trust {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 8px;
-          margin-top: 22px;
-        }
-
-        .trust div {
-          padding: 12px 5px;
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          border-radius: 11px;
-          background: rgba(255, 255, 255, 0.02);
-          color: #71717a;
-          text-align: center;
-          font-size: 9px;
-          font-weight: 800;
-        }
-
-        .trust span {
+        .info-item strong {
           display: block;
-          margin-bottom: 5px;
-          font-size: 14px;
+          color: #d4d4d8;
+          font-size: 11px;
+          font-weight: 900;
         }
 
-        .terms {
-          margin: 23px 0 0;
+        .info-item p {
+          margin: 5px 0 0;
           color: #52525b;
-          font-size: 10px;
-          line-height: 1.6;
-          text-align: center;
+          font-size: 9px;
+          line-height: 1.5;
         }
+
+        .info-item p b {
+          color: #71717a;
+        }
+
+        /* FOOTER */
 
         .footer {
           display: flex;
           justify-content: center;
+          align-items: center;
           gap: 10px;
-          margin-top: 28px;
+          margin-top: 35px;
           color: #3f3f46;
-          font-size: 10px;
+          font-size: 9px;
+          font-weight: 700;
+          letter-spacing: 0.03em;
         }
 
-        @keyframes spin {
-          to {
-            transform: rotate(360deg);
-          }
+        .footer-separator {
+          color: #27272a;
         }
 
-        @media (max-width: 820px) {
+        /* RESPONSIVO */
+
+        @media (max-width: 850px) {
+
           .checkout-page {
-            padding: 15px 14px 35px;
-          }
-
-          .topbar {
-            height: 60px;
-          }
-
-          .secure-top {
-            display: none;
-          }
-
-          .back-area {
-            padding: 25px 0 18px;
+            padding-left: 14px;
+            padding-right: 14px;
           }
 
           .checkout-grid {
@@ -933,29 +1693,124 @@ export default function Checkout() {
             min-height: auto;
           }
 
-          .product-content,
-          .payment-card {
-            padding: 28px;
+          .bottom-info {
+            grid-template-columns: 1fr;
           }
 
-          .product-card h1 {
-            font-size: 46px;
+        }
+
+        @media (max-width: 600px) {
+
+          .topbar {
+            height: 68px;
+          }
+
+          .secure-pill {
+            display: none;
+          }
+
+          .progress-area {
+            justify-content: flex-start;
+            overflow-x: auto;
+            padding-bottom: 3px;
+          }
+
+          .progress-line {
+            width: 35px;
+            flex: 0 0 35px;
+          }
+
+          .step {
+            flex: 0 0 auto;
+          }
+
+          .step div:last-child {
+            display: none;
+          }
+
+          .back-link {
+            margin-top: 30px;
+          }
+
+          .heading {
+            text-align: left;
+          }
+
+          .heading p {
+            margin-left: 0;
+          }
+
+          .product-inner,
+          .payment-card {
+            padding: 25px;
+          }
+
+          .product-inner h2 {
+            font-size: 42px;
           }
 
           .payment-card h2 {
-            font-size: 32px;
+            font-size: 31px;
           }
-        }
 
-        @media (max-width: 450px) {
-          .trust {
+          .trust-grid {
             grid-template-columns: 1fr;
+          }
+
+          .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+          }
+
+          .trust-item > span {
+            margin: 0;
+          }
+
+          .trust-item strong,
+          .trust-item small {
+            display: inline;
+          }
+
+          .trust-item small {
+            margin-left: 5px;
           }
 
           .footer {
             flex-wrap: wrap;
+            text-align: center;
+          }
+
+        }
+
+        @media (max-width: 400px) {
+
+          .product-inner,
+          .payment-card {
+            padding: 20px;
+          }
+
+          .product-inner h2 {
+            font-size: 37px;
+          }
+
+          .price {
+            font-size: 40px;
+          }
+
+          .heading h1 {
+            font-size: 37px;
+          }
+
+        }
+
+        @keyframes spin {
+          to {
+            transform: rotate(360deg);
           }
         }
+
       `}</style>
     </main>
   );
