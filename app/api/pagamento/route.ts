@@ -94,8 +94,11 @@ export async function POST(req: Request) {
 
     const paymentId = String(result.id);
 
+    // ID único do pedido no Supabase
+    const orderId = crypto.randomUUID();
+
     await createOrder({
-      id: crypto.randomUUID(),
+      id: orderId,
       payment_id: paymentId,
       external_reference: externalReference,
       product_key: productKey!,
@@ -108,9 +111,15 @@ export async function POST(req: Request) {
       paymentId,
       status: result.status,
       externalReference,
+
+      // ID real do pedido no Supabase
+      orderId,
+
       qrCode: transactionData.qr_code || "",
+
       qrCodeBase64:
         transactionData.qr_code_base64 || "",
+
       ticketUrl:
         transactionData.ticket_url || "",
     });
